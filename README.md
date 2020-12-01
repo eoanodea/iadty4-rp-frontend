@@ -1,4 +1,4 @@
-# Music Thery & Piano Improv App 🎹
+# Music Thery & Piano Improv App - Frontend 🎹
 
 ## Description
 
