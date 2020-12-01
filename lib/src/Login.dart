@@ -6,13 +6,14 @@
  * Author: Eoan O'Dea (eoan@web-space.design)
  * -----
  * File Description: 
- * Last Modified: Tuesday, 1st December 2020 7:55:02 pm
+ * Last Modified: Tuesday, 1st December 2020 8:00:46 pm
  * Modified By: Eoan O'Dea (eoan@web-space.design>)
  * -----
  * Copyright 2020 WebSpace, WebSpace
  */
 
 import 'package:flutter/material.dart';
+import 'package:frontend/src/WelcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Register.dart';
@@ -32,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        Navigator.pushNamed(context, '/');
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => RegisterPage()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -137,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
       text: TextSpan(
         text: 'Login',
         style: GoogleFonts.portLligatSans(
-          textStyle: Theme.of(context).textTheme.display1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
           color: Colors.black,
@@ -149,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email id"),
+        _entryField("Email"),
         _entryField("Password", isPassword: true),
       ],
     );

@@ -6,7 +6,7 @@
  * Author: Eoan O'Dea (eoan@web-space.design)
  * -----
  * File Description: 
- * Last Modified: Tuesday, 1st December 2020 7:54:53 pm
+ * Last Modified: Tuesday, 1st December 2020 8:02:06 pm
  * Modified By: Eoan O'Dea (eoan@web-space.design>)
  * -----
  * Copyright 2020 WebSpace, WebSpace
@@ -20,20 +20,20 @@ import 'Login.dart';
 import 'Widget/BezierContainer.dart';
 import 'Widget/CustomDivider.dart';
 
-class SignUpPage extends StatefulWidget {
-  SignUpPage({Key key, this.title}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _RegisterPageState extends State<RegisterPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        Navigator.popAndPushNamed(context, '/');
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -137,11 +137,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _title() {
     return RichText(
-      // textAlign: TextAlign.start,
       text: TextSpan(
         text: 'Register',
         style: GoogleFonts.portLligatSans(
-          textStyle: Theme.of(context).textTheme.display1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
           color: Colors.black,
@@ -154,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         _entryField("Username"),
-        _entryField("Email id"),
+        _entryField("Email"),
         _entryField("Password", isPassword: true),
       ],
     );

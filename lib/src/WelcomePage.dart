@@ -6,7 +6,7 @@
  * Author: Eoan O'Dea (eoan@web-space.design)
  * -----
  * File Description: 
- * Last Modified: Tuesday, 1st December 2020 7:55:06 pm
+ * Last Modified: Tuesday, 1st December 2020 8:00:11 pm
  * Modified By: Eoan O'Dea (eoan@web-space.design>)
  * -----
  * Copyright 2020 WebSpace, WebSpace
@@ -60,7 +60,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => RegisterPage()));
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -83,7 +83,6 @@ class _WelcomePageState extends State<WelcomePage> {
       text: TextSpan(
         text: 'Welcome',
         style: GoogleFonts.portLligatSans(
-          textStyle: Theme.of(context).textTheme.display1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
           color: Colors.white,
