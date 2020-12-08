@@ -82,9 +82,9 @@ class _WelcomePageState extends State<WelcomePage> {
     return RichText(
       text: TextSpan(
         text: 'Welcome',
-        style: GoogleFonts.portLligatSans(
+        style: GoogleFonts.openSans(
           fontSize: 30,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w900,
           color: Colors.white,
         ),
       ),

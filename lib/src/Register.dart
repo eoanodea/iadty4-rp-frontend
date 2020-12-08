@@ -139,9 +139,9 @@ class _RegisterPageState extends State<RegisterPage> {
     return RichText(
       text: TextSpan(
         text: 'Register',
-        style: GoogleFonts.portLligatSans(
+        style: GoogleFonts.openSans(
           fontSize: 30,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w900,
           color: Colors.black,
         ),
       ),
@@ -166,11 +166,11 @@ class _RegisterPageState extends State<RegisterPage> {
         height: height,
         child: Stack(
           children: <Widget>[
-            Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
-            ),
+            // Positioned(
+            //   top: -MediaQuery.of(context).size.height * .15,
+            //   right: -MediaQuery.of(context).size.width * .4,
+            //   child: BezierContainer(),
+            // ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(

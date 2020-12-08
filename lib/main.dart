@@ -1,17 +1,3 @@
-/*
- * File: main.dart
- * Project: lib
- * Version <<projectversion>>
- * File Created: Monday, 26th October 2020 5:29:46 pm
- * Author: Eoan O'Dea (eoan@web-space.design)
- * -----
- * File Description: 
- * Last Modified: Tuesday, 1st December 2020 8:00:13 pm
- * Modified By: Eoan O'Dea (eoan@web-space.design>)
- * -----
- * Copyright 2020 WebSpace, WebSpace
- */
-
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Login.dart';
 import 'package:frontend/src/Register.dart';

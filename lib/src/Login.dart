@@ -13,7 +13,6 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:frontend/src/WelcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Register.dart';
@@ -43,8 +42,13 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
               child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
             ),
-            Text('Back',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
+            Text(
+              'Back',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            )
           ],
         ),
       ),
@@ -65,11 +69,13 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextField(
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              fillColor: Color(0xfff3f3f4),
+              filled: true,
+            ),
+          )
         ],
       ),
     );
@@ -137,9 +143,9 @@ class _LoginPageState extends State<LoginPage> {
     return RichText(
       text: TextSpan(
         text: 'Login',
-        style: GoogleFonts.portLligatSans(
+        style: GoogleFonts.openSans(
           fontSize: 30,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w900,
           color: Colors.black,
         ),
       ),
@@ -163,10 +169,11 @@ class _LoginPageState extends State<LoginPage> {
       height: height,
       child: Stack(
         children: <Widget>[
-          Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
+          // Positioned(
+          //   top: -height * .15,
+          //   right: -MediaQuery.of(context).size.width * .4,
+          //   child: BezierContainer(),
+          // ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
