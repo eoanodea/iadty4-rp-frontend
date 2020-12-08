@@ -57,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final Map arguements = ModalRoute.of(context).settings.arguments as Map;
     if (arguements != null && user == null) {
-      print('profile arguements! ${arguements.runtimeType}');
       setState(() {
         user = arguements;
       });

@@ -1,6 +1,6 @@
 import 'package:frontend/src/services/NetworkHelper.dart';
 
-const baseURL = "https://ad235962efb5.ngrok.io";
+const baseURL = "https://iadt-researchproject-server.herokuapp.com";
 
 class User {
   final String token = "";
