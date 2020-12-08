@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Widget/CustomDivider.dart';
+import 'package:frontend/src/services/User.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,6 +30,31 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  User user = User();
+
+  String username = '';
+  String email = '';
+  String password = '';
+  bool isLoading = false;
+
+  void setLoading(bool loading) {
+    setState(() {
+      isLoading = loading;
+    });
+  }
+
+  void register() async {
+    setLoading(true);
+    var authedUser = await user.register(username, email, password);
+
+    setLoading(false);
+
+    if (authedUser == null) return;
+
+    Navigator.pushNamed(context, '/profile',
+        arguments: authedUser['data']['user']);
+  }
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -51,6 +77,19 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _entryField(String title, {bool isPassword = false}) {
+    void handleChange(name, value) {
+      setState(() {
+        if (name == 'Email') {
+          return email = value;
+        }
+        if (name == 'Password') {
+          return password = value;
+        }
+
+        username = value;
+      });
+    }
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -70,6 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
               fillColor: Color(0xfff3f3f4),
               filled: true,
             ),
+            onChanged: (value) => handleChange(title, value),
           )
         ],
       ),
@@ -77,11 +117,13 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
+    return GestureDetector(
+      onTap: () => register(),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -91,12 +133,17 @@ class _RegisterPageState extends State<RegisterPage> {
                 spreadRadius: 2)
           ],
           gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-      child: Text(
-        'Register Now',
-        style: TextStyle(fontSize: 20, color: Colors.white),
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: isLoading
+                ? [Colors.grey, Colors.grey]
+                : [Color(0xfffbb448), Color(0xfff7892b)],
+          ),
+        ),
+        child: Text(
+          isLoading ? 'Registering...' : 'Register',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
     );
   }
@@ -137,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _title() {
     return RichText(
       text: TextSpan(
-        text: 'Register',
+        text: 'Register - $username -  $email - $password',
         style: GoogleFonts.openSans(
           fontSize: 30,
           fontWeight: FontWeight.w900,

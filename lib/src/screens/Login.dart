@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
     var authedUser = await user.login(email, password);
 
-    print('auth user! ${authedUser['data']['token']}');
+    // print('auth user! ${authedUser['data']['token']}');
 
     setLoading(false);
 
@@ -119,9 +119,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return GestureDetector(
-      onTap: () {
-        login();
-      },
+      onTap: () => login(),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
