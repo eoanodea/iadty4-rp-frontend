@@ -1,17 +1,3 @@
-/*
- * File: WelcomePage.dart
- * Project: src
- * Version <<projectversion>>
- * File Created: Tuesday, 1st December 2020 7:37:50 pm
- * Author: Eoan O'Dea (eoan@web-space.design)
- * -----
- * File Description: 
- * Last Modified: Tuesday, 1st December 2020 8:00:11 pm
- * Modified By: Eoan O'Dea (eoan@web-space.design>)
- * -----
- * Copyright 2020 WebSpace, WebSpace
- */
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

@@ -1,38 +1,38 @@
 /*
- * File: Login.dart
+ * File: Register.dart
  * Project: src
  * Version <<projectversion>>
  * File Created: Tuesday, 1st December 2020 7:37:50 pm
  * Author: Eoan O'Dea (eoan@web-space.design)
  * -----
  * File Description: 
- * Last Modified: Tuesday, 1st December 2020 8:00:46 pm
+ * Last Modified: Tuesday, 1st December 2020 8:02:06 pm
  * Modified By: Eoan O'Dea (eoan@web-space.design>)
  * -----
  * Copyright 2020 WebSpace, WebSpace
  */
 
 import 'package:flutter/material.dart';
+import 'package:frontend/src/Widget/CustomDivider.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
-import 'Register.dart';
-import 'Widget/BezierContainer.dart';
-import 'Widget/CustomDivider.dart';
+import 'Login.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  RegisterPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/');
+        Navigator.popAndPushNamed(context, '/');
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -42,13 +42,8 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
               child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
             ),
-            Text(
-              'Back',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            )
+            Text('Back',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
           ],
         ),
       ),
@@ -100,17 +95,17 @@ class _LoginPageState extends State<LoginPage> {
               end: Alignment.centerRight,
               colors: [Color(0xfffbb448), Color(0xfff7892b)])),
       child: Text(
-        'Login',
+        'Register Now',
         style: TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }
 
-  Widget _createAccountLabel() {
+  Widget _loginAccountLabel() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RegisterPage()));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       },
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 20),
@@ -120,14 +115,14 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Don\'t have an account ?',
+              'Already have an account ?',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             ),
             SizedBox(
               width: 10,
             ),
             Text(
-              'Register',
+              'Login',
               style: TextStyle(
                   color: Color(0xfff79c4f),
                   fontSize: 13,
@@ -142,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _title() {
     return RichText(
       text: TextSpan(
-        text: 'Login',
+        text: 'Register',
         style: GoogleFonts.openSans(
           fontSize: 30,
           fontWeight: FontWeight.w900,
@@ -155,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
+        _entryField("Username"),
         _entryField("Email"),
         _entryField("Password", isPassword: true),
       ],
@@ -165,45 +161,44 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Container(
-      height: height,
-      child: Stack(
-        children: <Widget>[
-          // Positioned(
-          //   top: -height * .15,
-          //   right: -MediaQuery.of(context).size.width * .4,
-          //   child: BezierContainer(),
-          // ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  _title(),
-                  SizedBox(height: 50),
-                  _emailPasswordWidget(),
-                  SizedBox(height: 20),
-                  _submitButton(),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.centerRight,
-                    child: Text('Forgot Password ?',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ),
-                  CustomDivider(),
-                  SizedBox(height: height * .055),
-                  _createAccountLabel(),
-                ],
+      body: Container(
+        height: height,
+        child: Stack(
+          children: <Widget>[
+            // Positioned(
+            //   top: -MediaQuery.of(context).size.height * .15,
+            //   right: -MediaQuery.of(context).size.width * .4,
+            //   child: BezierContainer(),
+            // ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: height * .2),
+                    _title(),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    _emailPasswordWidget(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _submitButton(),
+                    SizedBox(height: 55),
+                    CustomDivider(),
+                    SizedBox(height: 5),
+                    _loginAccountLabel(),
+                  ],
+                ),
               ),
             ),
-          ),
-          Positioned(top: 40, left: 0, child: _backButton()),
-        ],
+            Positioned(top: 40, left: 0, child: _backButton()),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

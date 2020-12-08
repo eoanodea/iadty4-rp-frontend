@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Login.dart';
-import 'package:frontend/src/Register.dart';
-import 'package:frontend/src/WelcomePage.dart';
+import 'package:frontend/src/screens/Login.dart';
+import 'package:frontend/src/screens/Profile.dart';
+import 'package:frontend/src/screens/Register.dart';
+import 'package:frontend/src/screens/WelcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'src/WelcomePage.dart';
+import 'src/screens/WelcomePage.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => WelcomePage(),
           '/login': (context) => LoginPage(),
-          '/register': (context) => RegisterPage()
+          '/register': (context) => RegisterPage(),
+          '/profile': (context) => ProfilePage()
         }
         // home: WelcomePage(),
         );
