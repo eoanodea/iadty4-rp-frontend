@@ -101,6 +101,9 @@ class _LoginPageState extends State<LoginPage> {
         if (value.length < 3) {
           return '$title must be more than 3 characters';
         }
+        if (title == 'Email' && !value.contains('@')) {
+          return '$title must include an @ symbol';
+        }
         if (value.isEmpty) {
           return '$title cannot be blank';
         }

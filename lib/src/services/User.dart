@@ -12,9 +12,15 @@ class User {
     NetworkHelper networkHelper = NetworkHelper(url);
 
     final body = {'email': email, 'password': password};
-    var user = await networkHelper.postData(body);
+    try {
+      var user = await networkHelper.postData(body);
+      return user;
+    } catch (e) {
+      print('error! $e');
+      return e;
+    }
 
-    return user;
+    // return user;
   }
 
   // Register via API

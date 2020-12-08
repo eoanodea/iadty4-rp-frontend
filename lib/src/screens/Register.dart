@@ -69,8 +69,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setLoading(false);
 
-    if (authedUser == null) return;
+    print('response from request! $authedUser');
 
+    if (authedUser == null) return;
+    if (authedUser['sucess']) {
+      String errorMessage = (authedUser['data']['error']) as String;
+      setState(() {
+        error = errorMessage;
+      });
+    }
     Navigator.pushNamed(context, '/profile',
         arguments: authedUser['data']['user']);
   }
@@ -114,6 +121,9 @@ class _RegisterPageState extends State<RegisterPage> {
       validator: (value) {
         if (value.length < 3) {
           return '$title must be more than 3 characters';
+        }
+        if (title == 'Email' && !value.contains('@')) {
+          return '$title must include an @ symbol';
         }
         if (value.isEmpty) {
           return 'Field cannot be blank';
