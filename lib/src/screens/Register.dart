@@ -41,6 +41,8 @@ class _RegisterPageState extends State<RegisterPage> {
   String error = '';
   bool isLoading = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   void setLoading(bool loading) {
     setState(() {
       isLoading = loading;
@@ -56,12 +58,12 @@ class _RegisterPageState extends State<RegisterPage> {
   void register() async {
     setLoading(true);
 
-    if (email == '')
-      return setState(() => emailError = 'Email cannot be blank');
-    if (username == '')
-      return setState(() => usernameError = 'Username cannot be blank');
-    if (password == '')
-      return setState(() => passwordError = 'Password cannot be blank');
+    // if (email == '')
+    //   return setState(() => emailError = 'Email cannot be blank');
+    // if (username == '')
+    //   return setState(() => usernameError = 'Username cannot be blank');
+    // if (password == '')
+    //   return setState(() => passwordError = 'Password cannot be blank');
 
     var authedUser = await user.register(username, email, password);
 
@@ -108,35 +110,32 @@ class _RegisterPageState extends State<RegisterPage> {
       });
     }
 
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-            obscureText: isPassword,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
-              filled: true,
-            ),
-            onChanged: (value) => handleChange(title, value),
-          )
-        ],
+    return TextFormField(
+      validator: (value) {
+        if (value.length < 3) {
+          return '$title must be more than 3 characters';
+        }
+        if (value.isEmpty) {
+          return 'Field cannot be blank';
+        }
+        return null;
+      },
+      obscureText: isPassword,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        fillColor: Color(0xfff3f3f4),
+        filled: true,
+        labelText: '$title',
       ),
+      onChanged: (value) => handleChange(title, value),
     );
   }
 
-  Widget _submitButton() {
+  Widget _submitButton(formKey) {
     return GestureDetector(
-      onTap: () => register(),
+      onTap: () => {
+        if (formKey.currentState.validate()) {register()}
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
@@ -213,12 +212,30 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Username"),
-        _entryField("Email"),
-        _entryField("Password", isPassword: true),
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          _entryField("Username"),
+          SizedBox(
+            height: 50,
+          ),
+          _entryField("Email"),
+          SizedBox(
+            height: 50,
+          ),
+          _entryField("Password", isPassword: true),
+          SizedBox(
+            height: 50,
+          ),
+          _submitButton(_formKey),
+        ],
+      ),
+
+      // if (_formKey.currentState.validate()) {
+      //       // If the form is valid, display a Snackbar.
+      //       Scaffold.of(context)
+      //           .showSnackBar(SnackBar(content: Text('Processing Data')));
     );
   }
 
@@ -251,7 +268,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    _submitButton(),
                     SizedBox(height: 55),
                     CustomDivider(),
                     SizedBox(height: 5),

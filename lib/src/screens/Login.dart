@@ -35,6 +35,8 @@ class _LoginPageState extends State<LoginPage> {
   String password = '';
   bool isLoading = false;
 
+  final _formKey = GlobalKey<FormState>();
+
   void setLoading(bool loading) {
     setState(() {
       isLoading = loading;
@@ -83,43 +85,45 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _entryField(String title, {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-            obscureText: isPassword,
-            onChanged: (value) {
-              setState(() {
-                if (isPassword) {
-                  password = value;
-                } else {
-                  email = value;
-                }
-              });
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
-              filled: true,
-            ),
-          )
-        ],
+    void handleChange(name, value) {
+      setState(() {
+        if (name == 'Email') {
+          return email = value;
+        }
+        if (name == 'Password') {
+          return password = value;
+        }
+      });
+    }
+
+    return TextFormField(
+      validator: (value) {
+        if (value.length < 3) {
+          return '$title must be more than 3 characters';
+        }
+        if (value.isEmpty) {
+          return '$title cannot be blank';
+        }
+        return null;
+      },
+      obscureText: isPassword,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        fillColor: Color(0xfff3f3f4),
+        filled: true,
+        labelText: '$title',
       ),
+      onChanged: (value) => handleChange(title, value),
     );
   }
 
-  Widget _submitButton() {
+  Widget _submitButton(formKey) {
     return GestureDetector(
-      onTap: () => login(),
+      // onTap: () => {if (formKey.currentState.validate()) login()},
+
+      onTap: () => {
+        if (formKey.currentState.validate()) {login()}
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
@@ -197,11 +201,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _emailPasswordWidget() {
-    return Column(
-      children: <Widget>[
-        _entryField("Email"),
-        _entryField("Password", isPassword: true),
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          _entryField("Email"),
+          SizedBox(
+            height: 50,
+          ),
+          _entryField("Password", isPassword: true),
+          SizedBox(
+            height: 50,
+          ),
+          _submitButton(_formKey)
+        ],
+      ),
     );
   }
 
@@ -230,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 50),
                   _emailPasswordWidget(),
                   SizedBox(height: 20),
-                  _submitButton(),
+                  // _submitButton(),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     alignment: Alignment.centerRight,
