@@ -5,6 +5,7 @@ import 'package:frontend/src/screens/Register.dart';
 import 'package:frontend/src/screens/WelcomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'src/screens/Piano.dart';
 import 'src/screens/WelcomePage.dart';
 
 void main() => runApp(MyApp());
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => WelcomePage(),
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),
-          '/profile': (context) => ProfilePage()
+          '/profile': (context) => ProfilePage(),
+          '/piano': (context) => PianoPage()
         }
         // home: WelcomePage(),
         );

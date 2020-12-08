@@ -33,8 +33,12 @@ class _RegisterPageState extends State<RegisterPage> {
   User user = User();
 
   String username = '';
+  String usernameError = '';
   String email = '';
+  String emailError = '';
   String password = '';
+  String passwordError = '';
+  String error = '';
   bool isLoading = false;
 
   void setLoading(bool loading) {
@@ -43,8 +47,22 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
+  void setError(name, message) {
+    setState(() {
+      if (name == 'email') emailError = '';
+    });
+  }
+
   void register() async {
     setLoading(true);
+
+    if (email == '')
+      return setState(() => emailError = 'Email cannot be blank');
+    if (username == '')
+      return setState(() => usernameError = 'Username cannot be blank');
+    if (password == '')
+      return setState(() => passwordError = 'Password cannot be blank');
+
     var authedUser = await user.register(username, email, password);
 
     setLoading(false);
@@ -184,7 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _title() {
     return RichText(
       text: TextSpan(
-        text: 'Register - $username -  $email - $password',
+        text: 'Register',
         style: GoogleFonts.openSans(
           fontSize: 30,
           fontWeight: FontWeight.w900,

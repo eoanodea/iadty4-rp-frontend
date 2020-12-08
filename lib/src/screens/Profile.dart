@@ -40,6 +40,27 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Widget _pianoButton() {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, '/piano');
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 13),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: Text(
+          'Piano',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
   Widget _title() {
     return RichText(
       text: TextSpan(
@@ -92,6 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 20,
               ),
+              _pianoButton(),
               SizedBox(
                 height: 20,
               ),

@@ -1,6 +1,7 @@
 import 'package:frontend/src/services/NetworkHelper.dart';
 
-const baseURL = "https://iadt-researchproject-server.herokuapp.com";
+const live_baseURL = "https://iadt-researchproject-server.herokuapp.com";
+const baseURL = "https://ed5e4c2228dd.ngrok.io";
 
 class User {
   final String token = "";
@@ -13,8 +14,6 @@ class User {
     final body = {'email': email, 'password': password};
     var user = await networkHelper.postData(body);
 
-    print('response after login, $user');
-
     return user;
   }
 
@@ -25,11 +24,7 @@ class User {
 
     final body = {'name': name, 'email': email, 'password': password};
 
-    print('registering using this $body');
-
     var user = await networkHelper.postData(body);
-
-    print('Registration, $user');
 
     return user;
   }
