@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, '/');
+        Navigator.pop(context);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),

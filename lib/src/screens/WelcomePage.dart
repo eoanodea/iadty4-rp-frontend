@@ -57,7 +57,7 @@ class _WelcomePageState extends State<WelcomePage> {
           border: Border.all(color: Colors.white, width: 2),
         ),
         child: Text(
-          'Register now',
+          'Register',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
@@ -74,12 +74,19 @@ class _WelcomePageState extends State<WelcomePage> {
         padding: EdgeInsets.symmetric(vertical: 13),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          border: Border.all(color: Colors.white, width: 2),
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            border: Border.all(color: Colors.white, width: 2),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Color(0xffdf8e33).withAlpha(100),
+                  offset: Offset(2, 4),
+                  blurRadius: 8,
+                  spreadRadius: 2)
+            ],
+            color: Colors.white),
         child: Text(
           'Piano',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
         ),
       ),
     );

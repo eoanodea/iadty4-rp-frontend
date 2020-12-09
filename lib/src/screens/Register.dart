@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _backButton() {
     return InkWell(
       onTap: () {
-        Navigator.popAndPushNamed(context, '/');
+        Navigator.pop(context);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
