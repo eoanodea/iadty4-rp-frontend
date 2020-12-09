@@ -58,25 +58,19 @@ class _RegisterPageState extends State<RegisterPage> {
   void register() async {
     setLoading(true);
 
-    // if (email == '')
-    //   return setState(() => emailError = 'Email cannot be blank');
-    // if (username == '')
-    //   return setState(() => usernameError = 'Username cannot be blank');
-    // if (password == '')
-    //   return setState(() => passwordError = 'Password cannot be blank');
-
     var authedUser = await user.register(username, email, password);
 
     setLoading(false);
 
-    print('response from request! $authedUser');
-
     if (authedUser == null) return;
-    if (authedUser['sucess']) {
-      String errorMessage = (authedUser['data']['error']) as String;
+    if (!authedUser['success']) {
+      String errorMessage = (authedUser['error']) as String;
+
       setState(() {
         error = errorMessage;
       });
+
+      return;
     }
     Navigator.pushNamed(context, '/profile',
         arguments: authedUser['data']['user']);
@@ -238,14 +232,19 @@ class _RegisterPageState extends State<RegisterPage> {
           SizedBox(
             height: 50,
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30.0),
+            child: RichText(
+              text: TextSpan(
+                text: '$error',
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           _submitButton(_formKey),
         ],
       ),
-
-      // if (_formKey.currentState.validate()) {
-      //       // If the form is valid, display a Snackbar.
-      //       Scaffold.of(context)
-      //           .showSnackBar(SnackBar(content: Text('Processing Data')));
     );
   }
 

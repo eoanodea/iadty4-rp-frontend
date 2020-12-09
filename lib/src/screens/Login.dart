@@ -32,7 +32,11 @@ class _LoginPageState extends State<LoginPage> {
   User user = User();
 
   String email = '';
+  String emailError = '';
   String password = '';
+  String passwordError = '';
+  String error = '';
+
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -48,11 +52,18 @@ class _LoginPageState extends State<LoginPage> {
 
     var authedUser = await user.login(email, password);
 
-    // print('auth user! ${authedUser['data']['token']}');
-
     setLoading(false);
 
     if (authedUser == null) return;
+    if (!authedUser['success']) {
+      String errorMessage = (authedUser['error']) as String;
+
+      setState(() {
+        error = errorMessage;
+      });
+
+      return;
+    }
 
     Navigator.pushNamed(context, '/profile',
         arguments: authedUser['data']['user']);
@@ -216,6 +227,16 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: 50,
           ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30.0),
+            child: RichText(
+              text: TextSpan(
+                text: '$error',
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
           _submitButton(_formKey)
         ],
       ),
@@ -247,14 +268,14 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 50),
                   _emailPasswordWidget(),
                   SizedBox(height: 20),
-                  // _submitButton(),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.centerRight,
-                    child: Text('Forgot Password ?',
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ),
+
+                  // Container(
+                  //   padding: EdgeInsets.symmetric(vertical: 10),
+                  //   alignment: Alignment.centerRight,
+                  //   child: Text('Forgot Password ?',
+                  //       style: TextStyle(
+                  //           fontSize: 14, fontWeight: FontWeight.w500)),
+                  // ),
                   CustomDivider(),
                   SizedBox(height: height * .055),
                   _createAccountLabel(),
