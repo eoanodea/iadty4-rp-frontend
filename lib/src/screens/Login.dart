@@ -14,8 +14,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Widget/CustomDivider.dart';
+import 'package:frontend/src/components/utils.dart';
+import 'package:frontend/src/config/client.dart';
+import 'package:frontend/src/data/Auth.dart';
+import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:frontend/src/services/User.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'Register.dart';
 
@@ -47,27 +52,27 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  void login() async {
-    setLoading(true);
+  // void login() async {
+  //   setLoading(true);
 
-    var authedUser = await user.login(email, password);
+  //   var authedUser = await Auth.login;
 
-    setLoading(false);
+  //   setLoading(false);
 
-    if (authedUser == null) return;
-    if (!authedUser['success']) {
-      String errorMessage = (authedUser['error']) as String;
+  //   if (authedUser == null) return;
+  //   if (!authedUser['success']) {
+  //     String errorMessage = (authedUser['error']) as String;
 
-      setState(() {
-        error = errorMessage;
-      });
+  //     setState(() {
+  //       error = errorMessage;
+  //     });
 
-      return;
-    }
+  //     return;
+  //   }
 
-    Navigator.pushNamed(context, '/profile',
-        arguments: authedUser['data']['user']);
-  }
+  //   Navigator.pushNamed(context, '/profile',
+  //       arguments: authedUser['data']['user']);
+  // }
 
   Widget _backButton() {
     return InkWell(
@@ -113,7 +118,10 @@ class _LoginPageState extends State<LoginPage> {
           return '$title must be more than 3 characters';
         }
         if (title == 'Email' && !value.contains('@')) {
-          return '$title must include an @ symbol';
+          Pattern pattern =
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+          RegExp regex = new RegExp(pattern);
+          if (!regex.hasMatch(value)) return 'Please enter a valid email';
         }
         if (value.isEmpty) {
           return '$title cannot be blank';
@@ -131,12 +139,14 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _submitButton(formKey) {
+  Widget _submitButton(formKey, RunMutation runMutation) {
     return GestureDetector(
-      // onTap: () => {if (formKey.currentState.validate()) login()},
-
       onTap: () => {
-        if (formKey.currentState.validate()) {login()}
+        if (formKey.currentState.validate())
+          {
+            setLoading(true),
+            runMutation({"email": email, "password": password})
+          }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -214,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _emailPasswordWidget() {
+  Widget _emailPasswordWidget(RunMutation runMutation) {
     return Form(
       key: _formKey,
       child: Column(
@@ -237,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          _submitButton(_formKey)
+          _submitButton(_formKey, runMutation)
         ],
       ),
     );
@@ -256,32 +266,82 @@ class _LoginPageState extends State<LoginPage> {
           //   right: -MediaQuery.of(context).size.width * .4,
           //   child: BezierContainer(),
           // ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: height * .2),
-                  _title(),
-                  SizedBox(height: 50),
-                  _emailPasswordWidget(),
-                  SizedBox(height: 20),
+          Mutation(
+            options: MutationOptions(
+              errorPolicy: ErrorPolicy.all,
+              documentNode: gql(Auth.login),
+              update: (Cache cache, QueryResult result) {
+                if (result.hasException) {
+                  UtilFs.showToast("Login Failed", context);
 
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(vertical: 10),
-                  //   alignment: Alignment.centerRight,
-                  //   child: Text('Forgot Password ?',
-                  //       style: TextStyle(
-                  //           fontSize: 14, fontWeight: FontWeight.w500)),
-                  // ),
-                  CustomDivider(),
-                  SizedBox(height: height * .055),
-                  _createAccountLabel(),
-                ],
-              ),
+                  if (result.exception.clientException is NetworkException) {
+                    // handle network issues, maybe
+                    print("Network Exception!");
+                    setState(() {
+                      error = "Could not connect to server";
+                    });
+                    return cache;
+                  }
+
+                  setState(() {
+                    error = result.exception.graphqlErrors[0].message;
+                  });
+                  return cache;
+                }
+                return cache;
+              },
+              onError: (dynamic error) {
+                print("Error!! $error");
+              },
+              onCompleted: (dynamic result) async {
+                setState(() {
+                  isLoading = false;
+                  error = "";
+                });
+                if (result == null) {
+                  return;
+                }
+
+                if (result.data != null) {
+                  print(result.data['login']['token']);
+                  String token = result.data['login']['token'];
+                  UtilFs.showToast("Login Successful", context);
+                  await sharedPreferenceService.setToken(token);
+                  Config.initailizeClient(token);
+                  Navigator.pushReplacementNamed(context, "/dashboard");
+                  return;
+                }
+              },
             ),
+            builder: (RunMutation runMutation, QueryResult result) {
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: height * .2),
+                      _title(),
+                      SizedBox(height: 50),
+                      _emailPasswordWidget(runMutation),
+                      SizedBox(height: 20),
+
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(vertical: 10),
+                      //   alignment: Alignment.centerRight,
+                      //   child: Text('Forgot Password ?',
+                      //       style: TextStyle(
+                      //           fontSize: 14, fontWeight: FontWeight.w500)),
+                      // ),
+                      CustomDivider(),
+                      SizedBox(height: height * .055),
+                      _createAccountLabel(),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
           Positioned(top: 40, left: 0, child: _backButton()),
         ],
