@@ -15,23 +15,37 @@ import 'src/screens/WelcomePage.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
   @override
+  _MyApp createState() => _MyApp();
+}
+
+class _MyApp extends State {
+  String redirect;
+  String _token;
+
+  // This widget is the root of your application.
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    String _token;
 
     initMethod(context) async {
       await sharedPreferenceService.getSharedPreferencesInstance();
-      String _token = await sharedPreferenceService.token;
+      var token = await sharedPreferenceService.token;
+      print("running");
       if (_token == null || _token == "") {
-        Navigator.of(context).pushReplacementNamed('/welcome');
-      } else
-        Navigator.of(context).pushReplacementNamed('/dashboard');
+        setState(() => {
+              redirect = "/welcome",
+            });
+      } else {
+        setState(() => {
+              _token = token,
+              redirect = "/dashboard",
+            });
+      }
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => initMethod(context));
+    if (redirect == null)
+      WidgetsBinding.instance.addPostFrameCallback((_) => initMethod(context));
 
     return GraphQLProvider(
       client: _token ?? Config.initailizeClient(_token),
@@ -44,7 +58,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: Splash(),
+        home: Splash(
+          redirect: redirect,
+        ),
         routes: {
           '/welcome': (context) => WelcomePage(),
           '/login': (context) => LoginPage(),
@@ -56,4 +72,10 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  // @override
+  // State<StatefulWidget> createState() {
+  //   // TODO: implement createState
+  //   throw UnimplementedError();
+  // }
 }

@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/services/SharedPreferenceService.dart';
 
 class Splash extends StatelessWidget {
-  const Splash({
-    Key key,
-  }) : super(key: key);
+  final String redirect;
 
-  initMethod(context) async {
-    await sharedPreferenceService.getSharedPreferencesInstance();
-    String _token = await sharedPreferenceService.token;
-    if (_token == null || _token == "") {
-      Navigator.of(context).pushReplacementNamed('/welcome');
-    } else
-      Navigator.of(context).pushReplacementNamed('/dashboard');
-  }
+  const Splash({Key key, @required this.redirect}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    initMethod(context) async {
+      // this.runRedirect = true;
+      if (this.redirect != null) {
+        print(this.redirect);
+        Navigator.of(context).pushReplacementNamed(redirect);
+      }
+    }
+
     WidgetsBinding.instance.addPostFrameCallback((_) => initMethod(context));
 
     return Scaffold(

@@ -23,8 +23,8 @@ class Config {
 
   static final ErrorLink errorLink =
       ErrorLink(errorHandler: (ErrorResponse response) {
-    Operation operation = response.operation;
-    FetchResult result = response.fetchResult;
+    // Operation operation = response.operation;
+    // FetchResult result = response.fetchResult;
     OperationException exception = response.exception;
     print("found error config!!!");
     print(exception.toString());

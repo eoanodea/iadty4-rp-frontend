@@ -36,7 +36,7 @@ class Dashboard extends StatelessWidget {
                         icon: Icon(Icons.exit_to_app),
                         onPressed: () async {
                           sharedPreferenceService.clearToken();
-                          Navigator.pushReplacementNamed(ctx, "/login");
+                          Navigator.pushReplacementNamed(ctx, "/welcome");
                         },
                       ),
                     ],
