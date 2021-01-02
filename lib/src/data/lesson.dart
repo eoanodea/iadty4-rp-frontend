@@ -1,7 +1,7 @@
 class Lesson {
   static String getLessons = """
-    query getLessons {
-      getLessons {
+    query getLessons(\$type: String!) {
+      getLessons(type: \$type) {
         id
         title
         level 

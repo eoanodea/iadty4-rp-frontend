@@ -5,29 +5,29 @@ import 'package:frontend/src/data/Lesson.dart';
 import 'package:frontend/src/model/LessonItem.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class Lessons extends StatefulWidget {
-  Lessons({Key key}) : super(key: key);
+class ImprovLessons extends StatefulWidget {
+  ImprovLessons({Key key}) : super(key: key);
 
-  _LessonsState createState() => _LessonsState();
+  _ImprovLessonsState createState() => _ImprovLessonsState();
 }
 
-class _LessonsState extends State<Lessons> {
+class _ImprovLessonsState extends State<ImprovLessons> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Query(
         options: QueryOptions(
           documentNode: gql(Lesson.getLessons),
-          // variables: {"is_public": false},
+          variables: {"type": "IMPROV"},
         ),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {
           // refetchQuery = refetch;
           if (result.hasException) {
-            return Text(result.exception.toString());
+            return EmptyState(message: result.exception.toString());
           }
           if (result.loading) {
-            return Text('Loading');
+            return EmptyState(message: 'Loading');
           }
           final List<LazyCacheMap> items =
               (result.data['getLessons'] as List<dynamic>).cast<LazyCacheMap>();
@@ -38,10 +38,11 @@ class _LessonsState extends State<Lessons> {
               dynamic responseData = items[index];
               return LessonItemTile(
                 item: LessonItem.fromElements(
-                    responseData["id"],
-                    responseData['title'],
-                    responseData['level'],
-                    responseData['answer']),
+                  responseData["id"],
+                  responseData['title'],
+                  responseData['level'],
+                  responseData['type'],
+                ),
               );
             },
           );

@@ -62,29 +62,29 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
       // }
     }
 
-    Widget _backButton() {
-      return InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-                child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
-              ),
-              Text('Back',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white))
-            ],
-          ),
-        ),
-      );
-    }
+    // Widget _backButton() {
+    //   return InkWell(
+    //     onTap: () {
+    //       Navigator.pop(context);
+    //     },
+    //     child: Container(
+    //       padding: EdgeInsets.symmetric(horizontal: 10),
+    //       child: Row(
+    //         children: <Widget>[
+    //           Container(
+    //             padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
+    //             child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
+    //           ),
+    //           Text('Back',
+    //               style: TextStyle(
+    //                   fontSize: 14,
+    //                   fontWeight: FontWeight.w700,
+    //                   color: Colors.white))
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
 
     /// Renders a single key to the screen
     Widget renderKey(int note, bool sharp) {
@@ -147,7 +147,7 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
               ],
             ),
           ),
-          Positioned(top: 0, left: 0, child: _backButton()),
+          // Positioned(top: 0, left: 0, child: _backButton()),
         ],
       );
     }

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/screens/Piano.dart';
 import 'package:frontend/src/screens/Profile.dart';
-import 'package:frontend/src/screens/tabs/dashboard/Lessons.dart';
+import 'package:frontend/src/screens/tabs/dashboard/ImprovLessons.dart';
+import 'package:frontend/src/screens/tabs/dashboard/TheoryLessons.dart';
+
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -23,7 +25,7 @@ class Dashboard extends StatelessWidget {
             client: Config.initailizeClient(snapshot.data),
             child: CacheProvider(
               child: DefaultTabController(
-                length: 3,
+                length: 4,
                 child: Scaffold(
                   appBar: AppBar(
                     automaticallyImplyLeading: false,
@@ -44,8 +46,12 @@ class Dashboard extends StatelessWidget {
                   bottomNavigationBar: new TabBar(
                     tabs: [
                       Tab(
-                        text: "Lessons",
+                        text: "Music Theory",
                         icon: new Icon(Icons.edit),
+                      ),
+                      Tab(
+                        text: "Improv",
+                        icon: new Icon(Icons.dashboard),
                       ),
                       Tab(
                         text: "Piano",
@@ -65,7 +71,8 @@ class Dashboard extends StatelessWidget {
                   body: TabBarView(
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      Lessons(),
+                      TheoryLessons(),
+                      ImprovLessons(),
                       PianoPage(),
                       ProfilePage()
                       // Feeds(),
