@@ -14,9 +14,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Widget/CustomDivider.dart';
-import 'package:frontend/src/services/User.dart';
-
+import 'package:frontend/src/components/utils.dart';
+import 'package:frontend/src/data/Auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'Login.dart';
 
@@ -30,15 +31,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  User user = User();
-
   String username = '';
   String usernameError = '';
   String email = '';
   String emailError = '';
   String password = '';
   String passwordError = '';
+  String confirmPassword = '';
+  String confirmPasswordError = '';
   String error = '';
+
   bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -53,27 +55,6 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       if (name == 'email') emailError = '';
     });
-  }
-
-  void register() async {
-    setLoading(true);
-
-    var authedUser = await user.register(username, email, password);
-
-    setLoading(false);
-
-    if (authedUser == null) return;
-    if (!authedUser['success']) {
-      String errorMessage = (authedUser['error']) as String;
-
-      setState(() {
-        error = errorMessage;
-      });
-
-      return;
-    }
-    Navigator.pushNamed(context, '/profile',
-        arguments: authedUser['data']['user']);
   }
 
   Widget _backButton() {
@@ -106,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if (name == 'Password') {
           return password = value;
         }
-
+        if (name == "Confirm Password") return confirmPassword = value;
         username = value;
       });
     }
@@ -116,11 +97,17 @@ class _RegisterPageState extends State<RegisterPage> {
         if (value.length < 3) {
           return '$title must be more than 3 characters';
         }
-        if (title == 'Email' && !value.contains('@')) {
-          return '$title must include an @ symbol';
+        if (title == 'Email') {
+          Pattern pattern =
+              r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+          RegExp regex = new RegExp(pattern);
+          if (!regex.hasMatch(value)) return 'Please enter a valid email';
+        }
+        if (title == "Confirm Password" && value != password) {
+          return "Value must equal password";
         }
         if (value.isEmpty) {
-          return 'Field cannot be blank';
+          return '$title cannot be blank';
         }
         return null;
       },
@@ -135,10 +122,15 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _submitButton(formKey) {
+  Widget _submitButton(formKey, RunMutation runMutation) {
     return GestureDetector(
       onTap: () => {
-        if (formKey.currentState.validate()) {register()}
+        if (formKey.currentState.validate())
+          {
+            setLoading(true),
+            runMutation(
+                {"name": username, "email": email, "password": password})
+          }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -215,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _emailPasswordWidget() {
+  Widget _emailPasswordWidget(RunMutation runMutation) {
     return Form(
       key: _formKey,
       child: Column(
@@ -232,6 +224,10 @@ class _RegisterPageState extends State<RegisterPage> {
           SizedBox(
             height: 50,
           ),
+          _entryField("Confirm Password", isPassword: true),
+          SizedBox(
+            height: 50,
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 30.0),
             child: RichText(
@@ -242,7 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-          _submitButton(_formKey),
+          _submitButton(_formKey, runMutation)
         ],
       ),
     );
@@ -261,30 +257,80 @@ class _RegisterPageState extends State<RegisterPage> {
             //   right: -MediaQuery.of(context).size.width * .4,
             //   child: BezierContainer(),
             // ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: height * .2),
-                    _title(),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    _emailPasswordWidget(),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(height: 55),
-                    CustomDivider(),
-                    SizedBox(height: 5),
-                    _loginAccountLabel(),
-                  ],
+            Mutation(
+                options: MutationOptions(
+                  errorPolicy: ErrorPolicy.all,
+                  documentNode: gql(Auth.register),
+                  update: (Cache cache, QueryResult result) {
+                    if (result.hasException) {
+                      UtilFs.showToast("Register Failed", context);
+
+                      if (result.exception.clientException
+                          is NetworkException) {
+                        // handle network issues, maybe
+                        print("Network Exception!");
+                        setState(() {
+                          error = "Could not connect to server";
+                        });
+                        return cache;
+                      }
+
+                      setState(() {
+                        error = result.exception.graphqlErrors[0].message;
+                      });
+                      return cache;
+                    }
+                    return cache;
+                  },
+                  onError: (dynamic error) {
+                    print("Error!! $error");
+                  },
+                  onCompleted: (dynamic result) async {
+                    setState(() {
+                      isLoading = false;
+                      error = "";
+                    });
+                    if (result == null) {
+                      return;
+                    }
+
+                    if (result.data != null) {
+                      // print(result.data['login']['token']);
+                      // String token = result.data['login']['token'];
+                      UtilFs.showToast("Register Successful", context);
+                      // await sharedPreferenceService.setToken(token);
+                      // Config.initailizeClient(token);
+                      Navigator.pushReplacementNamed(context, "/login");
+                      return;
+                    }
+                  },
                 ),
-              ),
-            ),
+                builder: (RunMutation runMutation, QueryResult result) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: height * .2),
+                          _title(),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          _emailPasswordWidget(runMutation),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(height: 55),
+                          CustomDivider(),
+                          SizedBox(height: 5),
+                          _loginAccountLabel(),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
             Positioned(top: 40, left: 0, child: _backButton()),
           ],
         ),

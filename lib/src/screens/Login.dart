@@ -18,7 +18,6 @@ import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/data/Auth.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
-import 'package:frontend/src/services/User.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -34,8 +33,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  User user = User();
-
   String email = '';
   String emailError = '';
   String password = '';
@@ -51,28 +48,6 @@ class _LoginPageState extends State<LoginPage> {
       isLoading = loading;
     });
   }
-
-  // void login() async {
-  //   setLoading(true);
-
-  //   var authedUser = await Auth.login;
-
-  //   setLoading(false);
-
-  //   if (authedUser == null) return;
-  //   if (!authedUser['success']) {
-  //     String errorMessage = (authedUser['error']) as String;
-
-  //     setState(() {
-  //       error = errorMessage;
-  //     });
-
-  //     return;
-  //   }
-
-  //   Navigator.pushNamed(context, '/profile',
-  //       arguments: authedUser['data']['user']);
-  // }
 
   Widget _backButton() {
     return InkWell(
@@ -117,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
         if (value.length < 3) {
           return '$title must be more than 3 characters';
         }
-        if (title == 'Email' && !value.contains('@')) {
+        if (title == 'Email') {
           Pattern pattern =
               r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
           RegExp regex = new RegExp(pattern);

@@ -64,34 +64,6 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  Widget _pianoButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, '/piano');
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 13),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            border: Border.all(color: Colors.white, width: 2),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Color(0xffdf8e33).withAlpha(100),
-                  offset: Offset(2, 4),
-                  blurRadius: 8,
-                  spreadRadius: 2)
-            ],
-            color: Colors.white),
-        child: Text(
-          'Piano',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
-        ),
-      ),
-    );
-  }
-
   Widget _title() {
     return RichText(
       text: TextSpan(
@@ -141,7 +113,6 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 20,
               ),
-              _pianoButton(),
               SizedBox(
                 height: 20,
               ),
