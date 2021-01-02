@@ -5,7 +5,7 @@ import 'package:frontend/src/screens/Login.dart';
 import 'package:frontend/src/screens/Profile.dart';
 import 'package:frontend/src/screens/Register.dart';
 import 'package:frontend/src/screens/WelcomePage.dart';
-import 'package:frontend/src/screens/splash.dart';
+import 'package:frontend/src/screens/Splash.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

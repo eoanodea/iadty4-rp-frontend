@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/components/LessonItemTile.dart';
-import 'package:frontend/src/data/lesson.dart';
+import 'package:frontend/src/data/Lesson.dart';
 import 'package:frontend/src/model/LessonItem.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -28,12 +29,13 @@ class _LessonsState extends State<Lessons> {
           if (result.loading) {
             return Text('Loading');
           }
-          final List<LazyCacheMap> todos =
-              (result.data['todos'] as List<dynamic>).cast<LazyCacheMap>();
+          final List<LazyCacheMap> items =
+              (result.data['getLessons'] as List<dynamic>).cast<LazyCacheMap>();
+          if (items.length == 0) return EmptyState(message: 'No Lessons Found');
           return ListView.builder(
-            itemCount: todos.length,
+            itemCount: items.length,
             itemBuilder: (context, index) {
-              dynamic responseData = todos[index];
+              dynamic responseData = items[index];
               return LessonItemTile(
                 item: LessonItem.fromElements(
                     responseData["id"],
