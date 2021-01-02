@@ -104,6 +104,8 @@ class _LoginPageState extends State<LoginPage> {
         return null;
       },
       obscureText: isPassword,
+      keyboardType:
+          title == 'Email' ? TextInputType.emailAddress : TextInputType.text,
       decoration: InputDecoration(
         border: InputBorder.none,
         fillColor: Color(0xfff3f3f4),

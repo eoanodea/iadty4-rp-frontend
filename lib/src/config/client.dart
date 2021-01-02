@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+String serverURL = "https://iadt-researchproject-server.herokuapp.com/graphql";
+// = "http://localhost:3000/graphql";
+
 class Config {
   static String _token;
 
-  static final HttpLink httpLink = HttpLink(
-    uri: 'http://localhost:3000/graphql',
-  );
+  static final HttpLink httpLink = HttpLink(uri: serverURL);
 
   static final AuthLink authLink = AuthLink(getToken: () async => _token);
 
-  static final WebSocketLink websocketLink = WebSocketLink(
-    url: 'wss://hasura.io/learn/graphql',
-    config: SocketClientConfig(
-      autoReconnect: true,
-      inactivityTimeout: Duration(seconds: 30),
-      initPayload: () => {
-        "headers": {"Authorization": _token}
-      },
-    ),
-  );
+  // static final WebSocketLink websocketLink = WebSocketLink(
+  //   url: 'wss://hasura.io/learn/graphql',
+  //   config: SocketClientConfig(
+  //     autoReconnect: true,
+  //     inactivityTimeout: Duration(seconds: 30),
+  //     initPayload: () => {
+  //       "headers": {"Authorization": _token}
+  //     },
+  //   ),
+  // );
 
   static final ErrorLink errorLink =
       ErrorLink(errorHandler: (ErrorResponse response) {
