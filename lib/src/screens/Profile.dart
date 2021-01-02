@@ -38,25 +38,22 @@ class _ProfilePageState extends State<ProfilePage> {
             responseData['createdAt'],
           );
 
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Card(
-                      child: ListTile(
-                        title: Text('Hi, ${user.name}'),
-                        subtitle: Text(user.email),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+          return Container(
+            margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.account_circle),
+                    title: Text('Hi, ${user.name}'),
+                    subtitle: Text(user.email),
+                  ),
+                )
+              ],
             ),
           );
         },

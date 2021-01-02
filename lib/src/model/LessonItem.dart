@@ -1,11 +1,13 @@
+import 'package:frontend/src/data/Lesson.dart';
+
 class LessonItem {
   String id;
   String title = "";
   int level = 0;
   String answer = "";
-  String type = "";
+  LessonType type;
 
-  LessonItem.fromElements(String id, String title, int level, String type) {
+  LessonItem.fromElements(String id, String title, int level, LessonType type) {
     this.id = id;
     this.title = title;
     this.level = level;

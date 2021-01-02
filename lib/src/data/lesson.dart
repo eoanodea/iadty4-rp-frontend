@@ -1,3 +1,5 @@
+enum LessonType { THEORY, IMPROV }
+
 class Lesson {
   static String getLessons = """
     query getLessons(\$type: String!) {

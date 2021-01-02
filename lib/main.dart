@@ -52,7 +52,7 @@ class _MyApp extends State {
       child: MaterialApp(
         title: 'Easy Piano',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.orange,
           textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
             bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
           ),
@@ -72,10 +72,4 @@ class _MyApp extends State {
       ),
     );
   }
-
-  // @override
-  // State<StatefulWidget> createState() {
-  //   // TODO: implement createState
-  //   throw UnimplementedError();
-  // }
 }

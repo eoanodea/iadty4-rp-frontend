@@ -30,10 +30,8 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
 
   void _loadSoundFont() async {
     MidiUtils.unmute();
-    print('loading');
 
     rootBundle.load("assets/Piano.sf2").then((sf2) {
-      print('preparing piano + $sf2');
       MidiUtils.prepare(sf2, "Piano.sf2");
     });
     // VibrateUtils.canVibrate.then((vibrate) {
@@ -46,11 +44,10 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("State: $state");
     _loadSoundFont();
   }
 
-  final List<int> sharps = [25, 27, 0, 30, 32, 34];
+  final List<int> sharps = [25, 27, 0, 30, 32, 34, 0];
   final List<int> notes = [24, 26, 28, 29, 31, 33, 35, 36];
 
   @override
@@ -61,30 +58,6 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
       // VibrateUtils.light();
       // }
     }
-
-    // Widget _backButton() {
-    //   return InkWell(
-    //     onTap: () {
-    //       Navigator.pop(context);
-    //     },
-    //     child: Container(
-    //       padding: EdgeInsets.symmetric(horizontal: 10),
-    //       child: Row(
-    //         children: <Widget>[
-    //           Container(
-    //             padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-    //             child: Icon(Icons.keyboard_arrow_left, color: Colors.white),
-    //           ),
-    //           Text('Back',
-    //               style: TextStyle(
-    //                   fontSize: 14,
-    //                   fontWeight: FontWeight.w700,
-    //                   color: Colors.white))
-    //         ],
-    //       ),
-    //     ),
-    //   );
-    // }
 
     /// Renders a single key to the screen
     Widget renderKey(int note, bool sharp) {
@@ -118,11 +91,11 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
       return Stack(
         children: [
           Container(
-            margin: EdgeInsets.fromLTRB(10.0, 35.0, 10.0, 10.0),
+            margin: EdgeInsets.all(10.0),
             // margin: EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 for (var i = 0; i < notes.length; i++)
                   renderKey(notes[i], false),
@@ -131,8 +104,8 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
           ),
           Positioned(
             right: 0.0,
-            bottom: 120.0,
-            top: 50.0,
+            bottom: 50.0,
+            top: 30.0,
             width: 200.0,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -153,13 +126,11 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
     }
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
-          child: Container(
-            margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-            child: renderOctive(),
-          ),
+          child: renderOctive(),
         ),
       ),
     );

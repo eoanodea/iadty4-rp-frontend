@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/data/Lesson.dart';
 import 'package:frontend/src/model/LessonItem.dart';
 
 class LessonItemTile extends StatelessWidget {
@@ -24,9 +25,12 @@ class LessonItemTile extends StatelessWidget {
     return Container(
       child: Card(
         child: ListTile(
-          contentPadding: EdgeInsets.all(0),
+          contentPadding: EdgeInsets.all(8),
           title: Text(item.title),
-          subtitle: Text(item.level.toString()),
+          leading: Icon(item.type == LessonType.THEORY
+              ? Icons.menu_book
+              : Icons.music_note),
+          subtitle: Text("Level ${item.level.toString()}"),
         ),
       ),
     );

@@ -31,11 +31,13 @@ class Dashboard extends StatelessWidget {
                     automaticallyImplyLeading: false,
                     centerTitle: true,
                     title: Text(
-                      "ToDo App",
+                      "Easy Piano",
+                      style: TextStyle(color: Colors.white),
                     ),
                     actions: <Widget>[
                       IconButton(
                         icon: Icon(Icons.exit_to_app),
+                        color: Colors.white,
                         onPressed: () async {
                           sharedPreferenceService.clearToken();
                           Navigator.pushReplacementNamed(ctx, "/welcome");
@@ -46,20 +48,20 @@ class Dashboard extends StatelessWidget {
                   bottomNavigationBar: new TabBar(
                     tabs: [
                       Tab(
-                        text: "Music Theory",
-                        icon: new Icon(Icons.edit),
+                        text: "Theory",
+                        icon: new Icon(Icons.menu_book),
                       ),
                       Tab(
                         text: "Improv",
-                        icon: new Icon(Icons.dashboard),
+                        icon: new Icon(Icons.music_note),
                       ),
                       Tab(
                         text: "Piano",
-                        icon: new Icon(Icons.message),
+                        icon: new Icon(Icons.straighten),
                       ),
                       Tab(
                         text: "Profile",
-                        icon: new Icon(Icons.people),
+                        icon: new Icon(Icons.account_circle),
                       ),
                     ],
                     labelColor: Colors.black,
@@ -75,8 +77,6 @@ class Dashboard extends StatelessWidget {
                       ImprovLessons(),
                       PianoPage(),
                       ProfilePage()
-                      // Feeds(),
-                      // Online(),
                     ],
                   ),
                 ),
