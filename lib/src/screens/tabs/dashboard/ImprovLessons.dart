@@ -16,43 +16,41 @@ class _ImprovLessonsState extends State<ImprovLessons> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
-      child: Expanded(
-        child: Query(
-          options: QueryOptions(
-            documentNode: gql(Lesson.getLessons),
-            variables: {"type": "IMPROV"},
-          ),
-          builder: (QueryResult result,
-              {VoidCallback refetch, FetchMore fetchMore}) {
-            // refetchQuery = refetch;
-            if (result.hasException) {
-              return EmptyState(message: result.exception.toString());
-            }
-            if (result.loading) {
-              return EmptyState(message: 'Loading');
-            }
-            final List<LazyCacheMap> items =
-                (result.data['getLessons'] as List<dynamic>)
-                    .cast<LazyCacheMap>();
-            if (items.length == 0)
-              return EmptyState(message: 'No Lessons Found');
-            return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                dynamic responseData = items[index];
-                return LessonItemTile(
-                  item: LessonItem.fromElements(
-                    responseData["id"],
-                    responseData['title'],
-                    responseData['level'],
-                    LessonType.IMPROV,
-                  ),
-                );
-              },
-            );
-          },
+      // child: Expanded(
+      child: Query(
+        options: QueryOptions(
+          documentNode: gql(Lesson.getLessons),
+          variables: {"type": "IMPROV"},
         ),
+        builder: (QueryResult result,
+            {VoidCallback refetch, FetchMore fetchMore}) {
+          // refetchQuery = refetch;
+          if (result.hasException) {
+            return EmptyState(message: result.exception.toString());
+          }
+          if (result.loading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final List<LazyCacheMap> items =
+              (result.data['getLessons'] as List<dynamic>).cast<LazyCacheMap>();
+          if (items.length == 0) return EmptyState(message: 'No Lessons Found');
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              dynamic responseData = items[index];
+              return LessonItemTile(
+                item: LessonItem.fromElements(
+                  responseData["id"],
+                  responseData['title'],
+                  responseData['level'],
+                  LessonType.IMPROV,
+                ),
+              );
+            },
+          );
+        },
       ),
+      // ),
     );
   }
 }

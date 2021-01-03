@@ -22,7 +22,9 @@ class MyApp extends StatefulWidget {
 
 class _MyApp extends State {
   String redirect;
-  String _token;
+  String token = "";
+
+  _MyApp({this.redirect, this.token});
 
   // This widget is the root of your application.
   Widget build(BuildContext context) {
@@ -30,15 +32,13 @@ class _MyApp extends State {
 
     initMethod(context) async {
       await sharedPreferenceService.getSharedPreferencesInstance();
-      var token = await sharedPreferenceService.token;
-      print("running");
+      String _token = await sharedPreferenceService.token;
+
       if (_token == null || _token == "") {
-        setState(() => {
-              redirect = "/welcome",
-            });
+        setState(() => {redirect = "/welcome"});
       } else {
         setState(() => {
-              _token = token,
+              token = _token,
               redirect = "/dashboard",
             });
       }
@@ -48,7 +48,7 @@ class _MyApp extends State {
       WidgetsBinding.instance.addPostFrameCallback((_) => initMethod(context));
 
     return GraphQLProvider(
-      client: _token ?? Config.initailizeClient(_token),
+      client: Config.initailizeClient(token),
       child: MaterialApp(
         title: 'Easy Piano',
         theme: ThemeData(
@@ -73,3 +73,7 @@ class _MyApp extends State {
     );
   }
 }
+
+//1 token is null
+//2 checks if user has token
+//3 if so redirect and log user in right away, if not redirect to welcome page

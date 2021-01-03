@@ -18,46 +18,44 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Query(
-        options: QueryOptions(documentNode: gql(Auth.getUser)),
-        builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}) {
-          if (result.hasException) {
-            return EmptyState(message: result.exception.toString());
-          }
-          if (result.loading) {
-            return EmptyState(message: 'Loading');
-          }
+    return Query(
+      options: QueryOptions(documentNode: gql(Auth.getUser)),
+      builder: (QueryResult result,
+          {VoidCallback refetch, FetchMore fetchMore}) {
+        if (result.hasException) {
+          return EmptyState(message: result.exception.toString());
+        }
+        if (result.loading) {
+          return Center(child: CircularProgressIndicator());
+        }
 
-          dynamic responseData = result.data['get'];
-          UserItem user = UserItem.fromElements(
-            responseData['id'],
-            responseData['name'],
-            responseData['email'],
-            responseData['createdAt'],
-          );
+        dynamic responseData = result.data['get'];
+        UserItem user = UserItem.fromElements(
+          responseData['id'],
+          responseData['name'],
+          responseData['email'],
+          responseData['createdAt'],
+        );
 
-          return Container(
-            margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
-            height: MediaQuery.of(context).size.height,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.account_circle),
-                    title: Text('Hi, ${user.name}'),
-                    subtitle: Text(user.email),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
+        return Container(
+          margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.account_circle),
+                  title: Text('Hi, ${user.name}'),
+                  subtitle: Text(user.email),
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
