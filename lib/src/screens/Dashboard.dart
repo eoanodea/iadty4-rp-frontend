@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/screens/Piano.dart';
 import 'package:frontend/src/screens/Profile.dart';
-import 'package:frontend/src/screens/tabs/dashboard/ImprovLessons.dart';
-import 'package:frontend/src/screens/tabs/dashboard/TheoryLessons.dart';
+import 'package:frontend/src/screens/tabs/dashboard/ImprovModules.dart';
+import 'package:frontend/src/screens/tabs/dashboard/TheoryModules.dart';
 
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -73,8 +73,8 @@ class Dashboard extends StatelessWidget {
                   body: TabBarView(
                     physics: NeverScrollableScrollPhysics(),
                     children: [
-                      TheoryLessons(),
-                      ImprovLessons(),
+                      TheoryModules(),
+                      ImprovModules(),
                       PianoPage(),
                       ProfilePage()
                     ],

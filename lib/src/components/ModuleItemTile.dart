@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/data/Lesson.dart';
-import 'package:frontend/src/model/LessonItem.dart';
+import 'package:frontend/src/data/Module.dart';
+import 'package:frontend/src/model/ModuleItem.dart';
 
-class LessonItemTile extends StatelessWidget {
-  final LessonItem item;
+class ModuleItemTile extends StatelessWidget {
+  final ModuleItem item;
 
-  LessonItemTile({
+  ModuleItemTile({
     Key key,
     @required this.item,
   }) : super(key: key);
@@ -27,7 +27,7 @@ class LessonItemTile extends StatelessWidget {
         child: ListTile(
           contentPadding: EdgeInsets.all(8),
           title: Text(item.title),
-          leading: Icon(item.type == LessonType.THEORY
+          leading: Icon(item.type == ModuleType.THEORY
               ? Icons.menu_book
               : Icons.music_note),
           subtitle: Text("Level ${item.level.toString()}"),

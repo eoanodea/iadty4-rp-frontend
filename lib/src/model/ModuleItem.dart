@@ -1,13 +1,13 @@
-import 'package:frontend/src/data/Lesson.dart';
+import 'package:frontend/src/data/Module.dart';
 
-class LessonItem {
+class ModuleItem {
   String id;
   String title = "";
   int level = 0;
   String answer = "";
-  LessonType type;
+  ModuleType type;
 
-  LessonItem.fromElements(String id, String title, int level, LessonType type) {
+  ModuleItem.fromElements(String id, String title, int level, ModuleType type) {
     this.id = id;
     this.title = title;
     this.level = level;
@@ -15,7 +15,7 @@ class LessonItem {
   }
   Map toJson() {
     Map jsonData = {
-      "__typename": "lessons",
+      "__typename": "modules",
       "id": id,
       "title": title,
       "level": level,

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
-import 'package:frontend/src/components/LessonItemTile.dart';
-import 'package:frontend/src/data/Lesson.dart';
-import 'package:frontend/src/model/LessonItem.dart';
+import 'package:frontend/src/components/ModuleItemTile.dart';
+import 'package:frontend/src/data/Module.dart';
+import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class TheoryLessons extends StatefulWidget {
-  TheoryLessons({Key key}) : super(key: key);
+class ImprovModules extends StatefulWidget {
+  ImprovModules({Key key}) : super(key: key);
 
-  _TheoryLessonsState createState() => _TheoryLessonsState();
+  _ImprovModulesState createState() => _ImprovModulesState();
 }
 
-class _TheoryLessonsState extends State<TheoryLessons> {
+class _ImprovModulesState extends State<ImprovModules> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,8 +19,8 @@ class _TheoryLessonsState extends State<TheoryLessons> {
       // child: Expanded(
       child: Query(
         options: QueryOptions(
-          documentNode: gql(Lesson.getLessons),
-          variables: {"type": "THEORY"},
+          documentNode: gql(Module.getModules),
+          variables: {"type": "IMPROV"},
         ),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {
@@ -32,25 +32,25 @@ class _TheoryLessonsState extends State<TheoryLessons> {
             return Center(child: CircularProgressIndicator());
           }
           final List<LazyCacheMap> items =
-              (result.data['getLessons'] as List<dynamic>).cast<LazyCacheMap>();
-          if (items.length == 0) return EmptyState(message: 'No Lessons Found');
+              (result.data['getModules'] as List<dynamic>).cast<LazyCacheMap>();
+          if (items.length == 0) return EmptyState(message: 'No Modules Found');
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
               dynamic responseData = items[index];
-              return LessonItemTile(
-                item: LessonItem.fromElements(
+              return ModuleItemTile(
+                item: ModuleItem.fromElements(
                   responseData["id"],
                   responseData['title'],
                   responseData['level'],
-                  LessonType.THEORY,
+                  ModuleType.IMPROV,
                 ),
               );
             },
           );
         },
-        // ),
       ),
+      // ),
     );
   }
 }
