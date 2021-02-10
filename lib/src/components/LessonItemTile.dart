@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/data/Module.dart';
-import 'package:frontend/src/model/ModuleItem.dart';
-import 'package:frontend/src/screens/lessons/Lesson.dart';
+import 'package:frontend/src/data/Lesson.dart';
+import 'package:frontend/src/model/LessonItem.dart';
 
-class ModuleItemTile extends StatelessWidget {
-  final ModuleItem item;
+class LessonItemTile extends StatelessWidget {
+  final LessonItem item;
 
-  ModuleItemTile({
+  LessonItemTile({
     Key key,
     @required this.item,
   }) : super(key: key);
@@ -25,14 +24,11 @@ class ModuleItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
-        onTap: () => Navigator.push(context, LessonScreen(module: item)),
+        onTap: () => {},
         child: Card(
           child: ListTile(
             contentPadding: EdgeInsets.all(8),
-            title: Text(item.title),
-            leading: Icon(item.type == ModuleType.THEORY
-                ? Icons.menu_book
-                : Icons.music_note),
+            title: Text("Lesson "),
             subtitle: Text("Level ${item.level.toString()}"),
           ),
         ),
