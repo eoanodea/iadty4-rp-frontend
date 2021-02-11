@@ -24,9 +24,9 @@ class LessonItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
-        onTap: () => Navigator.push(
-          context,
+        onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
+            fullscreenDialog: true,
             builder: (context) => QuestionController(lessonId: item.id),
           ),
         ),

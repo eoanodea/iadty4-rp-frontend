@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/data/Lesson.dart';
+import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -18,12 +19,21 @@ class QuestionController extends StatefulWidget {
 class _QuestionControllerState extends State<QuestionController> {
   final String lessonId;
   List<bool> scores = [];
+  int lessonLength = 0;
 
   void addScore(bool score) {
     setState(() {
       scores.add(score);
     });
   }
+
+  void setLessonLength(int length) {
+    setState(() {
+      lessonLength = length;
+    });
+  }
+
+  void completeLesson(String userId) {}
 
   _QuestionControllerState({this.lessonId});
 
@@ -34,7 +44,7 @@ class _QuestionControllerState extends State<QuestionController> {
         // backgroundColor: Colors.white,
         centerTitle: true,
         // title: Text(
-        //   "${module.title}",
+        //   "${scores.length} / $lessonLength",
         //   style: TextStyle(color: Colors.white),
         // ),
       ),
@@ -63,7 +73,6 @@ class _QuestionControllerState extends State<QuestionController> {
                       if (result.loading) {
                         return Center(child: CircularProgressIndicator());
                       }
-
                       final List<LazyCacheMap> items = (result.data['getLesson']
                               ['questions'] as List<dynamic>)
                           .cast<LazyCacheMap>();
@@ -71,35 +80,39 @@ class _QuestionControllerState extends State<QuestionController> {
                         return EmptyState(message: 'No Questions Found');
 
                       if (scores.length >= items.length) {
-                        return Column(children: [
-                          Text("Done!"),
-                          FlatButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text("Done"),
-                          ),
-                        ]);
+                        return CompleteLesson(
+                          lessonId: result.data['getLesson']['id'],
+                          userId: result.data['get']['id'],
+                        );
                       }
 
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("${items[scores.length]['text']}"),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              FlatButton(
-                                onPressed: () => addScore(false),
-                                child: Text("No"),
-                              ),
-                              FlatButton(
-                                onPressed: () => addScore(true),
-                                child: Text("Yes"),
-                              )
-                            ],
-                          ),
-                        ],
+                      return Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text("${items[scores.length]['text']}"),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                FlatButton(
+                                  onPressed: () => addScore(false),
+                                  child: Text("No"),
+                                  textColor: Colors.orange,
+                                  color: Colors.white,
+                                ),
+                                FlatButton(
+                                  onPressed: () => addScore(true),
+                                  child: Text("Yes"),
+                                  color: Colors.orange,
+                                  textColor: Colors.white,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

@@ -32,6 +32,17 @@ class Lesson {
           title
         }
       }
+      get {
+        id
+      }
     }
     """;
+
+  static String completeLesson = """
+    mutation(\$userId: String!, \$lessonId: String!) {
+      completeLesson(userId: \$userId, lessonId: \$lessonId) {
+        id
+      }
+    }
+  """;
 }
