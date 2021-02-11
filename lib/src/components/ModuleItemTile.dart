@@ -25,7 +25,12 @@ class ModuleItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
-        onTap: () => Navigator.push(context, LessonScreen(module: item)),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LessonScreen(module: item),
+          ),
+        ),
         child: Card(
           child: ListTile(
             contentPadding: EdgeInsets.all(8),

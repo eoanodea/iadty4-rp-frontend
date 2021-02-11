@@ -6,7 +6,6 @@ import 'package:frontend/src/screens/Profile.dart';
 import 'package:frontend/src/screens/Register.dart';
 import 'package:frontend/src/screens/WelcomePage.dart';
 import 'package:frontend/src/screens/Splash.dart';
-import 'package:frontend/src/screens/lessons/Lesson.dart';
 
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -70,7 +69,6 @@ class _MyApp extends State {
           '/profile': (context) => ProfilePage(),
           '/piano': (context) => PianoPage(),
           "/dashboard": (BuildContext context) => Dashboard(),
-          "/lesson": (BuildContext context) => LessonScreen(),
         },
       ),
     );

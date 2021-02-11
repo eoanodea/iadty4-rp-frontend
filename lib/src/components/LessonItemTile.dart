@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/data/Lesson.dart';
 import 'package:frontend/src/model/LessonItem.dart';
 
 class LessonItemTile extends StatelessWidget {
