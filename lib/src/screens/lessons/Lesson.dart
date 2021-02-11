@@ -72,7 +72,7 @@ class LessonScreen extends StatelessWidget {
                             // ModuleItem.fromElements(responseData['level']);
                             // return Text('hello');
                             return LessonItemTile(
-                              item: LessonItem.fromElements(
+                              item: LessonsItem.fromElements(
                                 responseData["id"],
                                 responseData['level'],
                               ),

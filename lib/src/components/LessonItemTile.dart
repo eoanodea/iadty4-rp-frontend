@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/LessonItem.dart';
+import 'package:frontend/src/screens/lessons/QuestionController.dart';
 
 class LessonItemTile extends StatelessWidget {
-  final LessonItem item;
+  final LessonsItem item;
 
   LessonItemTile({
     Key key,
@@ -23,7 +24,12 @@ class LessonItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
-        onTap: () => {},
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuestionController(lessonId: item.id),
+          ),
+        ),
         child: Card(
           child: ListTile(
             contentPadding: EdgeInsets.all(8),

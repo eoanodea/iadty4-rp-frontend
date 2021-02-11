@@ -1,3 +1,10 @@
+enum QuestionType {
+  SCALE,
+  CHORD,
+  SIGNT_READING,
+  CHORD_PROGRESSION,
+}
+
 class Lesson {
   static String getLessons = """
     query getLessons(\$module: String!) {
@@ -11,8 +18,19 @@ class Lesson {
   static String getLesson = """
     query getLesson(\$id: String!) {
       getLesson(id: \$id) {
+        level
         id
-        level 
+        questions {
+          id
+          text
+          answer
+          type
+          requiresPiano
+        }
+        module {
+          id
+          title
+        }
       }
     }
     """;
