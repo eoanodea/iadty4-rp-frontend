@@ -31,6 +31,7 @@ class _ImprovModulesState extends State<ImprovModules> {
           if (result.loading) {
             return Center(child: CircularProgressIndicator());
           }
+
           final List<LazyCacheMap> items =
               (result.data['getModules'] as List<dynamic>).cast<LazyCacheMap>();
           if (items.length == 0) return EmptyState(message: 'No Modules Found');

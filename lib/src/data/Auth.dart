@@ -3,6 +3,7 @@ class Auth {
       mutation login(\$email: String!, \$password: String!) {
       login(input: { email: \$email, password: \$password }) {
         token
+        expiration
         user {
           email
           id

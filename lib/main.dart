@@ -34,6 +34,17 @@ class _MyApp extends State {
     initMethod(context) async {
       await sharedPreferenceService.getSharedPreferencesInstance();
       String _token = await sharedPreferenceService.token;
+      int _exp = await sharedPreferenceService.expiration;
+
+      if (_exp != null) {
+        DateTime now = new DateTime.now();
+        DateTime then = new DateTime.fromMillisecondsSinceEpoch(_exp);
+
+        if (now.isAfter(then)) {
+          _token = "";
+          await sharedPreferenceService.clearToken();
+        }
+      }
 
       if (_token == null || _token == "") {
         setState(() => {redirect = "/welcome"});

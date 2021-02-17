@@ -15,9 +15,15 @@ class SharedPreferenceService {
     await _prefs.setString('token', token);
   }
 
+  Future setExpDate(int expiration) async {
+    await _prefs.setInt('expiration', expiration);
+  }
+
   Future clearToken() async {
     await _prefs.clear();
   }
+
+  Future<int> get expiration async => _prefs.getInt('expiration');
 
   Future<String> get token async => _prefs.getString('token');
 }

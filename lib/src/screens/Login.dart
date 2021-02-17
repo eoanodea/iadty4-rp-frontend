@@ -280,10 +280,12 @@ class _LoginPageState extends State<LoginPage> {
                 }
 
                 if (result.data != null) {
-                  print(result.data['login']['token']);
                   String token = result.data['login']['token'];
+                  int expiration = result.data['login']['expiration'];
                   UtilFs.showToast("Login Successful", context);
                   await sharedPreferenceService.setToken(token);
+                  await sharedPreferenceService.setExpDate(expiration);
+
                   Config.initailizeClient(token);
                   Navigator.pushReplacementNamed(context, "/dashboard");
                   return;
