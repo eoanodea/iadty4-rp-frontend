@@ -1,8 +1,10 @@
 enum QuestionType {
-  SCALE,
-  CHORD,
-  SIGNT_READING,
-  CHORD_PROGRESSION,
+  // SCALE,
+  // CHORD,
+  // SIGNT_READING,
+  // CHORD_PROGRESSION,
+  MULTIPLE_CHOICE,
+  TEXT
 }
 
 class Lesson {
@@ -22,9 +24,16 @@ class Lesson {
         id
         questions {
           id
-          text
+          text {
+            id
+            text
+          }
           answer
           type
+          answerArr
+          options
+          image
+          answerHint
           requiresPiano
         }
         module {

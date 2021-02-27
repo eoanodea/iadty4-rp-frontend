@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/config/client.dart';
-import 'package:frontend/src/data/Lesson.dart';
+
+import 'package:frontend/src/data/Question.dart';
+import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
+import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -39,14 +42,30 @@ class _QuestionControllerState extends State<QuestionController> {
 
   @override
   Widget build(BuildContext context) {
+    Widget renderOptions(options) {
+      return Column(
+        children: [for (var item in options) Text(item)],
+      );
+    }
+
+    Widget renderText(textArr) {
+      return Wrap(
+        children: [
+          for (var item in textArr)
+            if (item['note'] != null)
+              Text(
+                item['text'],
+                style: TextStyle(decoration: TextDecoration.underline),
+              )
+            else
+              Text(item['text'])
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.white,
         centerTitle: true,
-        // title: Text(
-        //   "${scores.length} / $lessonLength",
-        //   style: TextStyle(color: Colors.white),
-        // ),
       ),
       body: FutureBuilder(
         future: sharedPreferenceService.token,
@@ -62,8 +81,8 @@ class _QuestionControllerState extends State<QuestionController> {
                 child: Container(
                   child: Query(
                     options: QueryOptions(
-                      documentNode: gql(Lesson.getLesson),
-                      variables: {"id": lessonId},
+                      documentNode: gql(Question.getQuestions),
+                      variables: {"lesson": lessonId},
                     ),
                     builder: (QueryResult result,
                         {VoidCallback refetch, FetchMore fetchMore}) {
@@ -73,9 +92,9 @@ class _QuestionControllerState extends State<QuestionController> {
                       if (result.loading) {
                         return Center(child: CircularProgressIndicator());
                       }
-                      final List<LazyCacheMap> items = (result.data['getLesson']
-                              ['questions'] as List<dynamic>)
-                          .cast<LazyCacheMap>();
+                      final List<LazyCacheMap> items =
+                          (result.data['getQuestions'] as List<dynamic>)
+                              .cast<LazyCacheMap>();
                       if (items.length == 0)
                         return EmptyState(message: 'No Questions Found');
 
@@ -86,17 +105,44 @@ class _QuestionControllerState extends State<QuestionController> {
                         );
                       }
 
+                      var item = items[scores.length];
+
+                      if (item['type'] == QuestionType.MULTIPLE_CHOICE) {
+                        return MultipleChoiceQuestion(
+                          question: QuestionItem.fromElements(
+                              item['id'],
+                              item['text'],
+                              item['answer'],
+                              item['type'],
+                              item['requiresPiano'],
+                              item['answerArr'],
+                              item['options'],
+                              item['image'],
+                              item['answerHint']),
+                        );
+                      }
+
                       return Container(
                         alignment: Alignment.center,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text("${items[scores.length]['text']}"),
+                            if (items[scores.length]['text'] != null)
+                              if (items[scores.length]['image'] != null)
+                                Image(
+                                  image: NetworkImage(Config.server +
+                                      '/images/' +
+                                      items[scores.length]['image']),
+                                ),
+                            renderText(item['text']),
+                            Text(
+                                "not multi choice ${items[scores.length]['type'] == 'MULTIPLE_CHOICE'}"),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                renderOptions(items[scores.length]['options']),
                                 FlatButton(
                                   onPressed: () => addScore(false),
                                   child: Text("No"),

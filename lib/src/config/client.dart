@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-String serverURL = "http://localhost:3000/graphql";
+String serverUrl = "http://localhost:3000";
+String endpoint = "/graphql";
 //"https://iadt-researchproject-server.herokuapp.com/graphql";
 //
 
 class Config {
   static String _token;
 
-  static final HttpLink httpLink = HttpLink(uri: serverURL);
-
+  static final HttpLink httpLink = HttpLink(uri: serverUrl + endpoint);
+  static final String server = serverUrl;
   static final AuthLink authLink = AuthLink(getToken: () async => _token);
 
   // static final WebSocketLink websocketLink = WebSocketLink(

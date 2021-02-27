@@ -8,15 +8,6 @@ import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-// class LessonScreen extends StatefulWidget {
-// LessonScreen({Key key, @required this.module}) : super(key: key);
-
-//   final ModuleItem module;
-
-//   @override
-//   _LessonScreenState createState() => _LessonScreenState();
-// }
-
 class LessonScreen extends StatelessWidget {
   final ModuleItem module;
 
@@ -45,44 +36,39 @@ class LessonScreen extends StatelessWidget {
               child: CacheProvider(
                 child: Container(
                   child: Query(
-                      options: QueryOptions(
-                        documentNode: gql(Lesson.getLessons),
-                        variables: {"module": module.id},
-                      ),
-                      builder: (QueryResult result,
-                          {VoidCallback refetch, FetchMore fetchMore}) {
-                        if (result.hasException) {
-                          return EmptyState(
-                              message: result.exception.toString());
-                        }
-                        if (result.loading) {
-                          return Center(child: CircularProgressIndicator());
-                        }
+                    options: QueryOptions(
+                      documentNode: gql(Lesson.getLessons),
+                      variables: {"module": module.id},
+                    ),
+                    builder: (QueryResult result,
+                        {VoidCallback refetch, FetchMore fetchMore}) {
+                      if (result.hasException) {
+                        return EmptyState(message: result.exception.toString());
+                      }
+                      if (result.loading) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
-                        final List<LazyCacheMap> items =
-                            (result.data['getLessons'] as List<dynamic>)
-                                .cast<LazyCacheMap>();
-                        if (items.length == 0)
-                          return EmptyState(message: 'No Lessons Found');
-                        return ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            dynamic responseData = items[index];
-                            // var text =
-                            // ModuleItem.fromElements(responseData['level']);
-                            // return Text('hello');
-                            return LessonItemTile(
-                              item: LessonsItem.fromElements(
-                                responseData["id"],
-                                responseData['level'],
-                              ),
-                            );
-                          },
-                        );
-                        // return Text(
-                        //   "LessonScreen Screen",
-                        // );
-                      }),
+                      final List<LazyCacheMap> items =
+                          (result.data['getLessons'] as List<dynamic>)
+                              .cast<LazyCacheMap>();
+                      if (items.length == 0)
+                        return EmptyState(message: 'No Lessons Found');
+                      return ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          dynamic responseData = items[index];
+
+                          return LessonItemTile(
+                            item: LessonsItem.fromElements(
+                              responseData["id"],
+                              responseData['level'],
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             );
