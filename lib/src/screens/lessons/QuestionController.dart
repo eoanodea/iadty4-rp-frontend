@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
+import 'package:frontend/src/components/RenderText.dart';
 import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/data/Question.dart';
+import 'package:frontend/src/model/NoteItem.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
+import 'package:frontend/src/model/TextItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
 import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
@@ -48,21 +53,6 @@ class _QuestionControllerState extends State<QuestionController> {
       );
     }
 
-    Widget renderText(textArr) {
-      return Wrap(
-        children: [
-          for (var item in textArr)
-            if (item['note'] != null)
-              Text(
-                item['text'],
-                style: TextStyle(decoration: TextDecoration.underline),
-              )
-            else
-              Text(item['text'])
-        ],
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -100,27 +90,18 @@ class _QuestionControllerState extends State<QuestionController> {
 
                       if (scores.length >= items.length) {
                         return CompleteLesson(
-                          lessonId: result.data['getLesson']['id'],
+                          lessonId: lessonId,
                           userId: result.data['get']['id'],
                         );
                       }
 
-                      var item = items[scores.length];
+                      // final LazyCacheMap note =
+                      //     (result.data['getNote'] as dynamic);
 
-                      if (item['type'] == QuestionType.MULTIPLE_CHOICE) {
-                        return MultipleChoiceQuestion(
-                          question: QuestionItem.fromElements(
-                              item['id'],
-                              item['text'],
-                              item['answer'],
-                              item['type'],
-                              item['requiresPiano'],
-                              item['answerArr'],
-                              item['options'],
-                              item['image'],
-                              item['answerHint']),
-                        );
-                      }
+                      // NoteItem goodBoyNote = NoteItem.fromJson(note);
+
+                      QuestionItem item =
+                          QuestionItem.fromJson(items[scores.length]);
 
                       return Container(
                         alignment: Alignment.center,
@@ -128,20 +109,19 @@ class _QuestionControllerState extends State<QuestionController> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            if (items[scores.length]['text'] != null)
-                              if (items[scores.length]['image'] != null)
-                                Image(
-                                  image: NetworkImage(Config.server +
-                                      '/images/' +
-                                      items[scores.length]['image']),
-                                ),
-                            renderText(item['text']),
-                            Text(
-                                "not multi choice ${items[scores.length]['type'] == 'MULTIPLE_CHOICE'}"),
+                            if (items[scores.length]['image'] != null)
+                              Image(
+                                image: NetworkImage(Config.server +
+                                    '/images/' +
+                                    items[scores.length]['image']),
+                              ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                // Text(goodBoyNote.id),
+                                Text("NOT Milti choice fun! "),
+                                RenderText(items: item.text),
                                 renderOptions(items[scores.length]['options']),
                                 FlatButton(
                                   onPressed: () => addScore(false),
@@ -172,4 +152,21 @@ class _QuestionControllerState extends State<QuestionController> {
       ),
     );
   }
+
+  // void renderText() {
+  //   Widget renderText(textArr) {
+  //     return Wrap(
+  //       children: [
+  //         for (var item in textArr)
+  //           if (item['note'] != null)
+  //             Text(
+  //               item['text'],
+  //               style: TextStyle(decoration: TextDecoration.underline),
+  //             )
+  //           else
+  //             Text(item['text'])
+  //       ],
+  //     );
+  //   }
+  // }
 }

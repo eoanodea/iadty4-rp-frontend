@@ -1,20 +1,25 @@
-class TextItem {
-  String id;
-  String text = "";
+import 'package:frontend/src/model/NoteItem.dart';
 
-  TextItem.fromElements(
-    String id,
-    String text,
-  ) {
-    this.id = id;
-    this.text = text;
-  }
-  Map toJson() {
-    Map jsonData = {
-      "__typename": "lessons",
-      "id": id,
-      "text": text,
-    };
-    return jsonData;
-  }
+class TextItem {
+  TextItem({
+    this.id,
+    this.text,
+    this.note,
+  });
+
+  String id;
+  String text;
+  NoteItem note;
+
+  factory TextItem.fromJson(Map<String, dynamic> json) => TextItem(
+        id: json["id"],
+        text: json["text"],
+        note: json["note"] == null ? null : NoteItem.fromJson(json["note"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "text": text,
+        "note": note == null ? null : note.toJson(),
+      };
 }

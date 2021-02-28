@@ -15,9 +15,9 @@ class Question {
         text {
           id
           text
-          note {
-            id
-          }
+            note {
+              id
+            }
         }
         answer
         type
@@ -26,6 +26,13 @@ class Question {
         image
         answerHint
         requiresPiano
+      }
+            getNote(id: "") {
+        id
+        text
+      }
+      get {
+        id
       }
     }
     """;
@@ -49,6 +56,7 @@ class Question {
         answerHint
         requiresPiano
       }
+
       module {
         id
         title

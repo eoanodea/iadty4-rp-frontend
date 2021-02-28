@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/components/RenderText.dart';
 
 import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/model/QuestionItem.dart';
+import 'package:frontend/src/model/TextItem.dart';
 
 class MultipleChoiceQuestion extends StatefulWidget {
   final QuestionItem question;
@@ -56,24 +58,25 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (question.image != null) renderImage(question.image),
-          Text("hello "),
+          Text("Milti choice fun!"),
+          RenderText(items: question.text),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // renderOptions(question.options),
-              // FlatButton(
-              //   onPressed: () => addScore(false),
-              //   child: Text("No"),
-              //   textColor: Colors.orange,
-              //   color: Colors.white,
-              // ),
-              // FlatButton(
-              //   onPressed: () => addScore(true),
-              //   child: Text("Yes"),
-              //   color: Colors.orange,
-              //   textColor: Colors.white,
-              // )
+              renderOptions(question.options),
+              FlatButton(
+                onPressed: () => addScore(false),
+                child: Text("No"),
+                textColor: Colors.orange,
+                color: Colors.white,
+              ),
+              FlatButton(
+                onPressed: () => addScore(true),
+                child: Text("Yes"),
+                color: Colors.orange,
+                textColor: Colors.white,
+              )
             ],
           ),
         ],
