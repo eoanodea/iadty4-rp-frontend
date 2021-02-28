@@ -121,6 +121,7 @@ class _QuestionControllerState extends State<QuestionController> {
                               children: [
                                 // Text(goodBoyNote.id),
                                 Text("NOT Milti choice fun! "),
+
                                 RenderText(items: item.text),
                                 renderOptions(items[scores.length]['options']),
                                 FlatButton(
