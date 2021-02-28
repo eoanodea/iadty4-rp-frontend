@@ -6,6 +6,7 @@ import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/data/Question.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
+import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -90,13 +91,14 @@ class _QuestionControllerState extends State<QuestionController> {
                         );
                       }
 
-                      // final LazyCacheMap note =
-                      //     (result.data['getNote'] as dynamic);
-
-                      // NoteItem goodBoyNote = NoteItem.fromJson(note);
-
                       QuestionItem item =
                           QuestionItem.fromJson(items[scores.length]);
+
+                      if (item.type == "MULTIPLE_CHOICE")
+                        return MultipleChoiceQuestion(
+                          question: item,
+                          onAnswer: (bool answer) => addScore(answer),
+                        );
 
                       return Container(
                         alignment: Alignment.center,
@@ -114,9 +116,6 @@ class _QuestionControllerState extends State<QuestionController> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // Text(goodBoyNote.id),
-                                Text("NOT Milti choice fun! "),
-
                                 RenderText(items: item.text),
                                 renderOptions(items[scores.length]['options']),
                                 FlatButton(
@@ -148,21 +147,4 @@ class _QuestionControllerState extends State<QuestionController> {
       ),
     );
   }
-
-  // void renderText() {
-  //   Widget renderText(textArr) {
-  //     return Wrap(
-  //       children: [
-  //         for (var item in textArr)
-  //           if (item['note'] != null)
-  //             Text(
-  //               item['text'],
-  //               style: TextStyle(decoration: TextDecoration.underline),
-  //             )
-  //           else
-  //             Text(item['text'])
-  //       ],
-  //     );
-  //   }
-  // }
 }

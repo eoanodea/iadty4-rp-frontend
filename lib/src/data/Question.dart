@@ -27,10 +27,6 @@ class Question {
         answerHint
         requiresPiano
       }
-            getNote(id: "") {
-        id
-        text
-      }
       get {
         id
       }

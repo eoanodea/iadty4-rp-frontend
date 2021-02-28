@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/TextItem.dart';
+import 'package:frontend/src/screens/NotePage.dart';
 
 class RenderText extends StatelessWidget {
   final List<TextItem> items;
@@ -12,12 +13,19 @@ class RenderText extends StatelessWidget {
       children: [
         for (var item in this.items)
           if (item.note != null)
-            Text(
-              item.text,
-              style: TextStyle(decoration: TextDecoration.underline),
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => NotePage(
+                        noteId: item.note.id,
+                      ))),
+              child: Text(
+                item.text + " ",
+                style: TextStyle(decoration: TextDecoration.underline),
+              ),
             )
           else
-            Text(item.text)
+            Text(item.text + " ")
       ],
     );
   }

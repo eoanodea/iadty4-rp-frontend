@@ -1,19 +1,23 @@
 class NoteItem {
   NoteItem({
     this.id,
-    this.text,
+    this.title,
+    this.content,
   });
 
   String id;
-  String text;
+  String title;
+  String content;
 
   factory NoteItem.fromJson(Map<String, dynamic> json) => NoteItem(
         id: json["id"],
-        text: json["text"] == null ? null : json["text"],
+        title: json["title"] == null ? null : json["title"],
+        content: json["content"] == null ? null : json["content"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "text": text == null ? null : text,
+        "title": title == null ? null : title,
+        "content": content == null ? null : content,
       };
 }
