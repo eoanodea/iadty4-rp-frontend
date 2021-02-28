@@ -40,12 +40,7 @@ class _ImprovModulesState extends State<ImprovModules> {
             itemBuilder: (context, index) {
               dynamic responseData = items[index];
               return ModuleItemTile(
-                item: ModuleItem.fromElements(
-                  responseData["id"],
-                  responseData['title'],
-                  responseData['level'],
-                  ModuleType.IMPROV,
-                ),
+                item: ModuleItem.fromJson(responseData),
               );
             },
           );

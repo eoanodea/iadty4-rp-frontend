@@ -2,44 +2,35 @@ import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 
 class LessonItem {
+  LessonItem({
+    this.id,
+    this.level,
+    this.questions,
+    this.module,
+  });
+
   String id;
-  int level = 0;
-  QuestionItem questions;
+  int level;
+  List<QuestionItem> questions;
   ModuleItem module;
 
-  LessonItem.fromElements(
-      String id, int level, QuestionItem questions, ModuleItem module) {
-    this.id = id;
-    this.level = level;
-    this.questions = questions;
-    this.module = module;
-  }
-  Map toJson() {
-    Map jsonData = {
-      "__typename": "lessons",
-      "id": id,
-      "level": level,
-      "questions": questions,
-      "module": module
-    };
-    return jsonData;
-  }
-}
+  factory LessonItem.fromJson(Map<String, dynamic> json) => LessonItem(
+        id: json["id"],
+        level: json["level"],
+        questions: json["questions"] == null
+            ? null
+            : List<QuestionItem>.from(
+                json["questions"].map((x) => QuestionItem.fromJson(x))),
+        module:
+            json["module"] == null ? null : ModuleItem.fromJson(json["module"]),
+      );
 
-class LessonsItem {
-  String id;
-  int level = 0;
-
-  LessonsItem.fromElements(String id, int level) {
-    this.id = id;
-    this.level = level;
-  }
-  Map toJson() {
-    Map jsonData = {
-      "__typename": "lessons",
-      "id": id,
-      "level": level,
-    };
-    return jsonData;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "level": level,
+        "questions": questions == null
+            ? null
+            : List<dynamic>.from(questions.map((x) => x.toJson())),
+        "module": module == null ? null : module.toJson(),
+      };
 }

@@ -4,7 +4,6 @@ import 'package:frontend/src/components/RenderText.dart';
 import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/model/QuestionItem.dart';
-import 'package:frontend/src/model/TextItem.dart';
 
 class MultipleChoiceQuestion extends StatefulWidget {
   final QuestionItem question;

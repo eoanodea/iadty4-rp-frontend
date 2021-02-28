@@ -1,16 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/components/RenderText.dart';
 import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/data/Question.dart';
-import 'package:frontend/src/model/NoteItem.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
-import 'package:frontend/src/model/TextItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
-import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

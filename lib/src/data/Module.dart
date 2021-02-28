@@ -16,9 +16,10 @@ class Module {
       getModule(id: \$id) {
         id
         title
-        level 
-        answer
-        questions
+        level
+        lessons {
+          id
+        }
       }
     }
     """;

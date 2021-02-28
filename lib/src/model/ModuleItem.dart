@@ -1,26 +1,38 @@
-import 'package:frontend/src/data/Module.dart';
+import 'LessonItem.dart';
 
 class ModuleItem {
-  String id;
-  String title = "";
-  int level = 0;
-  String answer = "";
-  ModuleType type;
+  ModuleItem({
+    this.id,
+    this.title,
+    this.level,
+    this.type,
+    this.lessons,
+  });
 
-  ModuleItem.fromElements(String id, String title, int level, ModuleType type) {
-    this.id = id;
-    this.title = title;
-    this.level = level;
-    this.type = type;
-  }
-  Map toJson() {
-    Map jsonData = {
-      "__typename": "modules",
-      "id": id,
-      "title": title,
-      "level": level,
-      "type": type
-    };
-    return jsonData;
-  }
+  String id;
+  String title;
+  int level;
+  String type;
+  List<LessonItem> lessons;
+
+  factory ModuleItem.fromJson(Map<String, dynamic> json) => ModuleItem(
+        id: json["id"],
+        title: json["title"],
+        level: json["level"],
+        type: json["type"],
+        lessons: json["lessons"] == null
+            ? null
+            : List<LessonItem>.from(
+                json["lessons"].map((x) => LessonItem.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "level": level,
+        "type": type,
+        "lessons": lessons == null
+            ? null
+            : List<dynamic>.from(lessons.map((x) => x.toJson())),
+      };
 }

@@ -60,10 +60,7 @@ class LessonScreen extends StatelessWidget {
                           dynamic responseData = items[index];
 
                           return LessonItemTile(
-                            item: LessonsItem.fromElements(
-                              responseData["id"],
-                              responseData['level'],
-                            ),
+                            item: LessonItem.fromJson(responseData),
                           );
                         },
                       );
@@ -133,10 +130,10 @@ class LessonScreen extends StatelessWidget {
 //                           itemBuilder: (context, index) {
 //                             dynamic responseData = items[index];
 //                             // var text =
-//                             // ModuleItem.fromElements(responseData['level']);
+//                             // ModuleItem.fromJson(responseData['level']);
 //                             // return Text('hello');
 //                             return LessonItemTile(
-//                               item: LessonItem.fromElements(
+//                               item: LessonItem.fromJson(
 //                                 responseData["id"],
 //                                 responseData['level'],
 //                               ),

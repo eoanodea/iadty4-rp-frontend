@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/data/Module.dart';
 import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:frontend/src/screens/lessons/Lesson.dart';
 
@@ -35,9 +34,8 @@ class ModuleItemTile extends StatelessWidget {
           child: ListTile(
             contentPadding: EdgeInsets.all(8),
             title: Text(item.title),
-            leading: Icon(item.type == ModuleType.THEORY
-                ? Icons.menu_book
-                : Icons.music_note),
+            leading: Icon(
+                item.type == 'THEORY' ? Icons.menu_book : Icons.music_note),
             subtitle: Text("Level ${item.level.toString()}"),
           ),
         ),

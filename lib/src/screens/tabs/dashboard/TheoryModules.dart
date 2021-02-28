@@ -39,12 +39,7 @@ class _TheoryModulesState extends State<TheoryModules> {
             itemBuilder: (context, index) {
               dynamic responseData = items[index];
               return ModuleItemTile(
-                item: ModuleItem.fromElements(
-                  responseData["id"],
-                  responseData['title'],
-                  responseData['level'],
-                  ModuleType.THEORY,
-                ),
+                item: ModuleItem.fromJson(responseData),
               );
             },
           );

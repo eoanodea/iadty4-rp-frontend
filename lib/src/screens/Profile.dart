@@ -30,12 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         }
 
         dynamic responseData = result.data['get'];
-        UserItem user = UserItem.fromElements(
-          responseData['id'],
-          responseData['name'],
-          responseData['email'],
-          responseData['createdAt'],
-        );
+        UserItem user = UserItem.fromJson(responseData);
 
         return Container(
           margin: EdgeInsets.fromLTRB(5, 25, 5, 25),

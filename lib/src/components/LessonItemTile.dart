@@ -3,7 +3,7 @@ import 'package:frontend/src/model/LessonItem.dart';
 import 'package:frontend/src/screens/lessons/QuestionController.dart';
 
 class LessonItemTile extends StatelessWidget {
-  final LessonsItem item;
+  final LessonItem item;
 
   LessonItemTile({
     Key key,
