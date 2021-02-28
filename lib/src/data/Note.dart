@@ -5,7 +5,8 @@ class Note {
       getNote(id: \$id) {
         id
         title
-        content
+        markdown
+        sanitizedHtml
       }
     }
     """;
