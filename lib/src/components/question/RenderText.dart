@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/constants.dart';
 import 'package:frontend/src/model/TextItem.dart';
 import 'package:frontend/src/screens/NotePage.dart';
 
@@ -19,14 +20,10 @@ class RenderText extends StatelessWidget {
                   builder: (context) => NotePage(
                         noteId: item.note.id,
                       ))),
-              child: Text(
-                item.text,
-                style: TextStyle(
-                    decoration: TextDecoration.underline, fontSize: 28),
-              ),
+              child: Text(item.text, style: kHeadingNoteTextStyle),
             )
           else
-            Text(" " + item.text + " ", style: TextStyle(fontSize: 28))
+            Text(" " + item.text + " ", style: kHeadingTextStyle)
       ],
     );
   }

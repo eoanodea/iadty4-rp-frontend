@@ -26,10 +26,21 @@ class _QuestionControllerState extends State<QuestionController> {
   final String lessonId;
   List<bool> scores = [];
   int lessonLength = 0;
+  bool previewAnswer = false;
+  bool currentAnswerIsCorrect = false;
+
+  void answerQuestion(bool answer) {
+    print("answered!");
+    setState(() {
+      previewAnswer = true;
+      currentAnswerIsCorrect = answer;
+    });
+  }
 
   void addScore(bool score) {
     setState(() {
       scores.add(score);
+      previewAnswer = false;
     });
   }
 
@@ -115,19 +126,9 @@ class _QuestionControllerState extends State<QuestionController> {
                               children: [
                                 if (item.options != null)
                                   RenderOptions(
-                                      options: items[scores.length]['options']),
-                                FlatButton(
-                                  onPressed: () => addScore(false),
-                                  child: Text("No"),
-                                  textColor: Colors.orange,
-                                  color: Colors.white,
-                                ),
-                                FlatButton(
-                                  onPressed: () => addScore(true),
-                                  child: Text("Yes"),
-                                  color: Colors.orange,
-                                  textColor: Colors.white,
-                                )
+                                    question: item,
+                                    onAnswer: (bool answer) => addScore(answer),
+                                  ),
                               ],
                             ),
                           ],
