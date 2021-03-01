@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
-import 'package:frontend/src/components/RenderText.dart';
+import 'package:frontend/src/components/question/RenderOptions.dart';
+import 'package:frontend/src/components/question/RenderText.dart';
 import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/data/Question.dart';
@@ -9,6 +10,7 @@ import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
 import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class QuestionController extends StatefulWidget {
   final String lessonId;
@@ -43,12 +45,6 @@ class _QuestionControllerState extends State<QuestionController> {
 
   @override
   Widget build(BuildContext context) {
-    Widget renderOptions(options) {
-      return Column(
-        children: [for (var item in options) Text(item)],
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -106,6 +102,7 @@ class _QuestionControllerState extends State<QuestionController> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            RenderText(items: item.text),
                             if (items[scores.length]['image'] != null)
                               Image(
                                 image: NetworkImage(Config.server +
@@ -116,8 +113,9 @@ class _QuestionControllerState extends State<QuestionController> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                RenderText(items: item.text),
-                                renderOptions(items[scores.length]['options']),
+                                if (item.options != null)
+                                  RenderOptions(
+                                      options: items[scores.length]['options']),
                                 FlatButton(
                                   onPressed: () => addScore(false),
                                   child: Text("No"),

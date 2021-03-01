@@ -20,12 +20,13 @@ class RenderText extends StatelessWidget {
                         noteId: item.note.id,
                       ))),
               child: Text(
-                item.text + " ",
-                style: TextStyle(decoration: TextDecoration.underline),
+                item.text,
+                style: TextStyle(
+                    decoration: TextDecoration.underline, fontSize: 28),
               ),
             )
           else
-            Text(item.text + " ")
+            Text(" " + item.text + " ", style: TextStyle(fontSize: 28))
       ],
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/RenderText.dart';
+import 'package:frontend/src/components/question/RenderText.dart';
 
 import 'package:frontend/src/config/client.dart';
 
