@@ -35,19 +35,28 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
     }
 
     Column renderIncorrectAnswer() {
-      return Column(children: [
-        Text(
-          "Answer Incorrect",
-          style: kSubHeadingTextStyle,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text('The correct answer was ${question.answerArr.map((e) => "$e")}',
-            style: kSubHeadingTextStyle),
-        if (question.answerHint != null)
-          Text(question.answerHint, style: kSubHeadingHintTextStyle),
-      ]);
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Answer Incorrect",
+              style: kSubHeadingTextStyle,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+                'The correct answer was ${question.answerArr.map((e) => "$e")}',
+                style: kSubHeadingTextStyle),
+            if (question.answerHint != null)
+              Container(
+                margin: EdgeInsets.only(top: 10.0),
+                child: Text(question.answerHint,
+                    textAlign: TextAlign.center,
+                    style: kSubHeadingHintTextStyle),
+              ),
+          ]);
     }
 
     bool checkAnswer() {
@@ -111,7 +120,7 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
                               "Answer Correct!",
                               style: kSubHeadingTextStyle,
                             ),
-                          SizedBox(height: 50),
+                          SizedBox(height: 20),
                           ElevatedButton(
                               child: const Text('Next'),
                               onPressed: () =>

@@ -10,7 +10,6 @@ import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
 import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class QuestionController extends StatefulWidget {
   final String lessonId;
@@ -26,21 +25,10 @@ class _QuestionControllerState extends State<QuestionController> {
   final String lessonId;
   List<bool> scores = [];
   int lessonLength = 0;
-  bool previewAnswer = false;
-  bool currentAnswerIsCorrect = false;
-
-  void answerQuestion(bool answer) {
-    print("answered!");
-    setState(() {
-      previewAnswer = true;
-      currentAnswerIsCorrect = answer;
-    });
-  }
 
   void addScore(bool score) {
     setState(() {
       scores.add(score);
-      previewAnswer = false;
     });
   }
 
@@ -93,6 +81,8 @@ class _QuestionControllerState extends State<QuestionController> {
 
                       if (scores.length >= items.length) {
                         return CompleteLesson(
+                          // questions: items,
+                          score: scores,
                           lessonId: lessonId,
                           userId: result.data['get']['id'],
                         );

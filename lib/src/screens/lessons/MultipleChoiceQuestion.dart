@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/question/RenderMultiSelectOptions.dart';
-import 'package:frontend/src/components/question/RenderOptions.dart';
 import 'package:frontend/src/components/question/RenderText.dart';
 
 import 'package:frontend/src/config/client.dart';
@@ -18,12 +17,6 @@ class MultipleChoiceQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget renderOptions(options) {
-      return Column(
-        children: [for (var item in options) Text(item)],
-      );
-    }
-
     Widget renderImage(image) {
       return Image(
         image: NetworkImage(Config.server + '/images/' + image),

@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/utils.dart';
+import 'package:frontend/src/constants.dart';
 import 'package:frontend/src/data/Lesson.dart';
+import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class CompleteLesson extends StatefulWidget {
   final String lessonId;
   final String userId;
+  // final List<QuestionItem> questions;
+  List<bool> score;
 
-  CompleteLesson({Key key, @required this.lessonId, @required this.userId})
+  CompleteLesson(
+      {Key key,
+      @required this.lessonId,
+      @required this.userId,
+      // @required this.questions,
+      @required this.score})
       : super(key: key);
 
   @override
-  _CompleteLessonState createState() =>
-      _CompleteLessonState(lessonId: lessonId, userId: userId);
+  _CompleteLessonState createState() => _CompleteLessonState(
+      lessonId: lessonId,
+      userId: userId,
+      //questions: questions,
+      score: score);
 }
 
 class _CompleteLessonState extends State<CompleteLesson> {
@@ -21,8 +33,31 @@ class _CompleteLessonState extends State<CompleteLesson> {
 
   final String lessonId;
   final String userId;
+  // final List<QuestionItem> questions;
+  List<bool> score;
+  // int totalCorrect;
 
-  _CompleteLessonState({this.lessonId, this.userId});
+  int countScores() {
+    int result = 0;
+    for (var item in score) {
+      if (item == true) result += 1;
+    }
+    // score.forEach((element) {
+    // if(element == true) {
+    //   result +=1;
+    //   }
+    // }
+    return result;
+    // setState(() {
+    //   totalCorrect = result;
+    // });
+  }
+
+  _CompleteLessonState(
+      {this.lessonId,
+      this.userId,
+      //this.questions,
+      this.score});
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +116,19 @@ class _CompleteLessonState extends State<CompleteLesson> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Done!"),
+              Icon(
+                Icons.check,
+                size: 80.0,
+                color: Colors.blue,
+              ),
+              Text(
+                "Lesson Complete",
+                style: kHeadingTextStyle,
+              ),
+              Text(
+                "You answered ${countScores()} correct out of ${score.length}",
+                style: kSubHeadingTextStyle,
+              ),
               FlatButton(
                 onPressed: () => isLoading
                     ? null
