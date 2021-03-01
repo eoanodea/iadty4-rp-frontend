@@ -34,7 +34,8 @@ class _ImprovModulesState extends State<ImprovModules> {
 
           final List<LazyCacheMap> items =
               (result.data['getModules'] as List<dynamic>).cast<LazyCacheMap>();
-          if (items.length == 0) return EmptyState(message: 'No Modules Found');
+          if (items.length == 0)
+            return EmptyState(message: 'No Improv Modules Found');
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {

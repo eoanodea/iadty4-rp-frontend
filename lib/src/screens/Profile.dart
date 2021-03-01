@@ -33,18 +33,13 @@ class _ProfilePageState extends State<ProfilePage> {
         UserItem user = UserItem.fromJson(responseData);
 
         return Container(
-          margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
+          margin: EdgeInsets.fromLTRB(5, 50, 5, 25),
           height: MediaQuery.of(context).size.height,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(
-                    "https://avatars.githubusercontent.com/u/1250478?s=400&u=a3d8c44bcef6911a6905c60c10daaa463cb8a520&v=4"),
-              ),
               Card(
                 child: ListTile(
                   leading: Icon(Icons.account_circle),

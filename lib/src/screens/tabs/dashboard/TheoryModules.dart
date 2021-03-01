@@ -33,7 +33,8 @@ class _TheoryModulesState extends State<TheoryModules> {
           }
           final List<LazyCacheMap> items =
               (result.data['getModules'] as List<dynamic>).cast<LazyCacheMap>();
-          if (items.length == 0) return EmptyState(message: 'No Modules Found');
+          if (items.length == 0)
+            return EmptyState(message: 'No Theory Modules Found');
           return ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-String serverUrl = "http://localhost:3000";
+// String serverUrl = "http://localhost:3000";
+String serverUrl = "https://iadt-researchproject-server.herokuapp.com";
+// String endpoint = "/graphql";
 String endpoint = "/graphql";
-//"https://iadt-researchproject-server.herokuapp.com/graphql";
-//
 
 class Config {
   static String _token;
