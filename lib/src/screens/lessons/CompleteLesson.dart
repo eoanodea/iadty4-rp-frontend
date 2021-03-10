@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/constants.dart';
 import 'package:frontend/src/data/Lesson.dart';
-import 'package:frontend/src/model/QuestionItem.dart';
+
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class CompleteLesson extends StatefulWidget {

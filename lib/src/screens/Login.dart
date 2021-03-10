@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: Text(
-          isLoading ? 'Loggin in...' : 'Login',
+          isLoading ? 'Logging in...' : 'Login',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),

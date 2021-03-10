@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/question/RenderMultiSelectOptions.dart';
+import 'package:frontend/src/components/question/RenderMultiSelectPianoOptions.dart';
 import 'package:frontend/src/components/question/RenderText.dart';
 
 import 'package:frontend/src/config/client.dart';
@@ -35,10 +36,14 @@ class MultipleChoiceQuestion extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              RenderMultiSelectOptions(
+              RenderMultiSelectPianoOptions(
                 question: question,
                 onAnswer: (bool answer) => onAnswer(answer),
               ),
+              // RenderMultiSelectOptions(
+              //   question: question,
+              //   onAnswer: (bool answer) => onAnswer(answer),
+              // ),
             ],
           ),
         ],

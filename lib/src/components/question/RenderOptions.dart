@@ -55,7 +55,9 @@ class RenderOptions extends StatelessWidget {
             builder: (BuildContext context) {
               return Container(
                 height: 200,
-                color: Colors.amber,
+                color: value.name == question.answer
+                    ? Colors.green
+                    : Colors.red[600],
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +68,7 @@ class RenderOptions extends StatelessWidget {
                       else
                         Text(
                           "Answer Correct!",
-                          style: kSubHeadingTextStyle,
+                          style: kSubHeadingAnswerTextStyle,
                         ),
                       SizedBox(height: 50),
                       ElevatedButton(

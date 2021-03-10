@@ -107,7 +107,7 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
                 builder: (BuildContext context) {
                   return Container(
                     height: 200,
-                    color: Colors.amber,
+                    color: checkAnswer() ? Colors.green : Colors.red[600],
                     child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +118,7 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
                           else
                             Text(
                               "Answer Correct!",
-                              style: kSubHeadingTextStyle,
+                              style: kSubHeadingAnswerTextStyle,
                             ),
                           SizedBox(height: 20),
                           ElevatedButton(
