@@ -19,11 +19,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
       # Runs a single command using the runners shell
       - name: Build
-        run: |
-          flutter pub get
-          flutter build web --release --web-renderer html
+        run: flutter pub get
+        run: flutter build web --release
+
         env:
           NODE_ENV: production
           # REACT_APP_CV_ENG_URL: ${{ secrets.REACT_APP_CV_ENG_URL }}
