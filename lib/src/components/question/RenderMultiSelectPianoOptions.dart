@@ -135,6 +135,7 @@ class _RenderMultiSelectPianoOptionsState
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Text("Media query ${mediaQuery.size.width}"),
         MultiSelectChipField(
           showHeader: false,
           searchHint: "Select multiple answers by tapping them",

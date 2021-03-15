@@ -106,9 +106,13 @@ class _QuestionControllerState extends State<QuestionController> {
                             RenderText(items: item.text),
                             if (items[scores.length]['image'] != null)
                               Image(
-                                image: NetworkImage(Config.server +
-                                    '/images/' +
-                                    items[scores.length]['image']),
+                                image: NetworkImage(
+                                    Config.server +
+                                        '/images/' +
+                                        items[scores.length]['image'],
+                                    headers: {
+                                      "Access-Control-Allow-Origin": "*"
+                                    }),
                               ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
