@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'src/screens/Piano.dart';
+import 'src/screens/Splash.dart';
 import 'src/screens/WelcomePage.dart';
 
 void main() => runApp(MyApp());
