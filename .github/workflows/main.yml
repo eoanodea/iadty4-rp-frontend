@@ -24,8 +24,9 @@ jobs:
           channel: 'dev'
       # Runs a single command using the runners shell
       - name: Build
-        run: flutter pub get
-        run: flutter build web --release
+          run: |
+          flutter pub get
+          flutter build web --release
 
         env:
           NODE_ENV: production
