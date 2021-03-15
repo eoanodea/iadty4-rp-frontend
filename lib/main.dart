@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/screens/Dashboard.dart';
 import 'package:frontend/src/screens/Login.dart';
+import 'package:frontend/src/screens/Piano.dart';
 import 'package:frontend/src/screens/Profile.dart';
 import 'package:frontend/src/screens/Register.dart';
 import 'package:frontend/src/screens/WelcomePage.dart';
@@ -10,10 +11,6 @@ import 'package:frontend/src/screens/Splash.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
-import 'src/screens/Piano.dart';
-import 'src/screens/Splash.dart';
-import 'src/screens/WelcomePage.dart';
 
 void main() => runApp(MyApp());
 
