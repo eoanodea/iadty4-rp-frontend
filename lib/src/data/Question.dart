@@ -15,6 +15,7 @@ class Question {
         text {
           id
           text
+          order
             note {
               id
             }
@@ -40,6 +41,7 @@ class Question {
         text {
           id
           text  
+          order
           note {
             id
           }

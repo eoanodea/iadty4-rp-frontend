@@ -10,16 +10,22 @@ class RenderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // List<TextItem> sortedItems =
+    items.sort((a, b) => a.order.compareTo(b.order));
+
     return Wrap(
       children: [
-        for (var item in this.items)
+        for (var item in items)
           if (item.note != null)
             GestureDetector(
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (context) => NotePage(
-                        noteId: item.note.id,
-                      ))),
+                    noteId: item.note.id,
+                  ),
+                ),
+              ),
               child: Text(item.text, style: kHeadingNoteTextStyle),
             )
           else

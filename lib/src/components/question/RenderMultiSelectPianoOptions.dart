@@ -129,37 +129,10 @@ class _RenderMultiSelectPianoOptionsState
       // }
     }
 
-    Widget renderKey(int note, bool sharp) {
-      final pitchName = 'Pitch Name';
-
-      return Expanded(
-        child: Container(
-          margin: EdgeInsets.all(5.0),
-          child: Semantics(
-            button: true,
-            hint: pitchName,
-            child: Material(
-              borderRadius: borderRadius,
-              color: sharp ? Colors.black : Colors.white,
-              child: InkWell(
-                borderRadius: borderRadius,
-                highlightColor: Colors.grey,
-                onTap: () {},
-                onTapCancel: () {
-                  MidiUtils.stop(note + (12 * 3));
-                },
-                onTapDown: (_) => playNote(note + (12 * 3)),
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     final mediaQuery = MediaQuery.of(context);
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         MultiSelectChipField(
@@ -224,6 +197,7 @@ class _RenderMultiSelectPianoOptionsState
           alignment: MainAxisAlignment.center,
           children: [
             FlatButton(
+              minWidth: mediaQuery.size.width,
               color: selectedOptions.length < 1 ? Colors.grey : Colors.orange,
               child: const Text(
                 'Done',
