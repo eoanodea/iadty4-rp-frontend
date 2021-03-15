@@ -25,6 +25,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Build
         run: |
+          flutter config --enable-web
           flutter pub get
           flutter build web --release
 
@@ -36,4 +37,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           BRANCH: gh-pages
-          FOLDER: web
+          FOLDER: ./build/web
