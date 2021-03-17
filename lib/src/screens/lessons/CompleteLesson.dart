@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/constants.dart';
@@ -9,14 +10,14 @@ class CompleteLesson extends StatefulWidget {
   final String lessonId;
   final String userId;
   // final List<QuestionItem> questions;
-  List<bool> score;
+  final List<bool> score;
 
   CompleteLesson(
       {Key key,
-      @required this.lessonId,
-      @required this.userId,
-      // @required this.questions,
-      @required this.score})
+      this.lessonId,
+      this.userId,
+      // required this.questions,
+      this.score})
       : super(key: key);
 
   @override

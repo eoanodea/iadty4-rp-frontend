@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/data/Option.dart';
@@ -142,7 +143,7 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
 //   final QuestionItem question;
 //   final QuestionCallback onAnswer;
 
-//   const RenderMultiSelectOptions({Key key, this.question, this.onAnswer})
+//   const RenderMultiSelectOptions({Key? key, this.question, this.onAnswer})
 //       : super(key: key);
 
 // }

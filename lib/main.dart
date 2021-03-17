@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/screens/Dashboard.dart';
@@ -16,7 +17,7 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
-  _MyApp createState() => _MyApp();
+  _MyApp createState() => _MyApp(redirect: '', token: '');
 }
 
 class _MyApp extends State {

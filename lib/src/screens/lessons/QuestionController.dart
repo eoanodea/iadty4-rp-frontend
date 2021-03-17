@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/components/question/RenderOptions.dart';
@@ -14,7 +15,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class QuestionController extends StatefulWidget {
   final String lessonId;
 
-  QuestionController({Key key, @required this.lessonId}) : super(key: key);
+  QuestionController({Key key, this.lessonId}) : super(key: key);
 
   @override
   _QuestionControllerState createState() =>

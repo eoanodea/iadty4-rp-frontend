@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/components/LessonItemTile.dart';
@@ -11,7 +12,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 class LessonScreen extends StatelessWidget {
   final ModuleItem module;
 
-  LessonScreen({Key key, @required this.module}) : super(key: key);
+  LessonScreen({Key key, this.module}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

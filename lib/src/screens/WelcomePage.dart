@@ -1,13 +1,13 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Login.dart';
 import 'Register.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  WelcomePage({Key key}) : super(key: key);
 
   @override
   _WelcomePageState createState() => _WelcomePageState();

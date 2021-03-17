@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/data/Option.dart';
 import 'package:frontend/src/model/QuestionItem.dart';

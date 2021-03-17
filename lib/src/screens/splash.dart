@@ -1,9 +1,10 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 
 class Splash extends StatelessWidget {
   final String redirect;
 
-  const Splash({Key key, @required this.redirect}) : super(key: key);
+  const Splash({Key key, this.redirect}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

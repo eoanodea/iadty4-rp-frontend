@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/LessonItem.dart';
 import 'package:frontend/src/screens/lessons/QuestionController.dart';
@@ -7,7 +8,7 @@ class LessonItemTile extends StatelessWidget {
 
   LessonItemTile({
     Key key,
-    @required this.item,
+    this.item,
   }) : super(key: key);
 
   Map<String, Object> extractTodoData(Object data) {
@@ -16,8 +17,8 @@ class LessonItemTile extends StatelessWidget {
     if (returning == null) {
       return null;
     }
-    List<Object> list = returning['returning'];
-    return list[0] as Map<String, Object>;
+    Object list = returning['returning'];
+    return list as Map<String, Object>;
   }
 
   @override

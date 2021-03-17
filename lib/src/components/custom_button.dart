@@ -7,16 +7,16 @@ class CustomButton extends StatelessWidget {
   final double width;
 
   CustomButton({
-    Key key,
-    @required this.onTap,
-    @required this.text,
-    @required this.height,
-    @required this.width,
+    Key? key,
+    required this.onTap,
+    required this.text,
+    required this.height,
+    required this.width,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => onTap,
       child: Container(
         width: width,
         height: height,

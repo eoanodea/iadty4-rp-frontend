@@ -5,9 +5,9 @@ class FeedTile extends StatelessWidget {
   final String feed;
 
   FeedTile({
-    Key key,
-    @required this.username,
-    @required this.feed,
+    Key? key,
+    required this.username,
+    required this.feed,
   }) : super(key: key);
 
   @override

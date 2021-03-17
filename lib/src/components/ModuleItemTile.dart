@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:frontend/src/screens/lessons/Lesson.dart';
@@ -7,7 +8,7 @@ class ModuleItemTile extends StatelessWidget {
 
   ModuleItemTile({
     Key key,
-    @required this.item,
+    this.item,
   }) : super(key: key);
 
   Map<String, Object> extractTodoData(Object data) {

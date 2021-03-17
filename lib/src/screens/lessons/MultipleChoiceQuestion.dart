@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:flutter/material.dart';
 
 import 'package:frontend/src/components/question/RenderMultiSelectPianoOptions.dart';
@@ -57,7 +58,7 @@ class MultipleChoiceQuestion extends StatelessWidget {
 //   final QuestionCallback onAnswer;
 
 //   MultipleChoiceQuestion(
-//       {Key key, @required this.question, @required this.onAnswer})
+//       {Key? key, required this.question, required this.onAnswer})
 //       : super(key: key);
 
 //   @override

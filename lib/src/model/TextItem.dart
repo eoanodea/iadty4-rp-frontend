@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:frontend/src/model/NoteItem.dart';
 
 class TextItem {
