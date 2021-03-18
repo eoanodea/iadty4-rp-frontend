@@ -42,14 +42,14 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
           children: [
             Text(
               "Answer Incorrect",
-              style: kSubHeadingTextStyle,
+              style: kSubHeadingAnswerTextStyle,
             ),
             SizedBox(
               height: 10,
             ),
             Text(
                 'The correct answer was ${question.answerArr.map((e) => "$e")}',
-                style: kSubHeadingTextStyle),
+                style: kSubHeadingAnswerTextStyle),
             if (question.answerHint != null)
               Container(
                 margin: EdgeInsets.only(top: 10.0),

@@ -19,7 +19,7 @@ const kSubHeadingAnswerTextStyle =
     TextStyle(fontSize: kSubHeadingFontSize, color: Colors.white);
 
 const kSubHeadingHintTextStyle =
-    TextStyle(fontSize: 18, fontStyle: FontStyle.italic);
+    TextStyle(fontSize: 18, fontStyle: FontStyle.italic, color: Colors.white);
 
 const BorderRadiusGeometry borderRadius = BorderRadius.all(
   Radius.circular(10.0),

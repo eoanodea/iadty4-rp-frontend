@@ -26,13 +26,13 @@ class RenderOptions extends StatelessWidget {
       return Column(children: [
         Text(
           "Answer Incorrect",
-          style: kSubHeadingTextStyle,
+          style: kSubHeadingAnswerTextStyle,
         ),
         SizedBox(
           height: 10,
         ),
         Text('The correct answer was ${question.answer}',
-            style: kSubHeadingTextStyle),
+            style: kSubHeadingAnswerTextStyle),
         if (question.answerHint != null)
           Text(question.answerHint, style: kSubHeadingHintTextStyle),
       ]);
