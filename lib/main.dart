@@ -55,8 +55,9 @@ class _MyApp extends State {
       }
     }
 
-    if (redirect == null)
+    if (redirect == "") {
       WidgetsBinding.instance.addPostFrameCallback((_) => initMethod(context));
+    }
 
     return GraphQLProvider(
       client: Config.initailizeClient(token),

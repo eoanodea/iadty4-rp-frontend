@@ -9,6 +9,7 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initMethod(context) async {
+      print("here we go! ${this.redirect}");
       if (this.redirect != null) {
         Navigator.of(context).pushReplacementNamed(redirect);
       }
