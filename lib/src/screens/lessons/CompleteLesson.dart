@@ -131,9 +131,8 @@ class _CompleteLessonState extends State<CompleteLesson> {
                 style: kSubHeadingTextStyle,
               ),
               FlatButton(
-                onPressed: () => isLoading
-                    ? null
-                    : runMutation({"userId": userId, "lessonId": lessonId}),
+                onPressed: () =>
+                    isLoading ? null : runMutation({"lessonId": lessonId}),
                 child: Text(isLoading ? "Saving..." : "Done"),
                 color: Colors.orange,
                 textColor: Colors.white,

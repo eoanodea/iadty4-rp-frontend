@@ -1,7 +1,6 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/src/constants.dart';
 
 import 'Login.dart';
 import 'Register.dart';
@@ -36,7 +35,9 @@ class _WelcomePageState extends State<WelcomePage> {
             color: Colors.white),
         child: Text(
           'Login',
-          style: TextStyle(fontSize: 20, color: Color(0xfff7892b)),
+          style: kbodyTextStyle.copyWith(
+            color: Color(0xfff7892b),
+          ),
         ),
       ),
     );
@@ -56,24 +57,15 @@ class _WelcomePageState extends State<WelcomePage> {
           borderRadius: BorderRadius.all(Radius.circular(5)),
           border: Border.all(color: Colors.white, width: 2),
         ),
-        child: Text(
-          'Register',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
+        child: Text('Register',
+            style: kbodyTextStyle.copyWith(color: Colors.white)),
       ),
     );
   }
 
   Widget _title() {
     return RichText(
-      text: TextSpan(
-        text: 'Welcome',
-        style: GoogleFonts.openSans(
-          fontSize: 30,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-        ),
-      ),
+      text: TextSpan(text: 'Welcome', style: kHeadingTextStyle),
     );
   }
 

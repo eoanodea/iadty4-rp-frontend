@@ -37,27 +37,26 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
 
     Column renderIncorrectAnswer() {
       return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Answer Incorrect",
-              style: kSubHeadingAnswerTextStyle,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Answer Incorrect",
+            style: kSubHeadingAnswerTextStyle,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text('The correct answer was ${question.answerArr.map((e) => "$e")}',
+              style: kSubHeadingAnswerTextStyle),
+          if (question.answerHint != null)
+            Container(
+              margin: EdgeInsets.only(top: 10.0),
+              child: Text(question.answerHint,
+                  textAlign: TextAlign.center, style: kSubHeadingHintTextStyle),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-                'The correct answer was ${question.answerArr.map((e) => "$e")}',
-                style: kSubHeadingAnswerTextStyle),
-            if (question.answerHint != null)
-              Container(
-                margin: EdgeInsets.only(top: 10.0),
-                child: Text(question.answerHint,
-                    textAlign: TextAlign.center,
-                    style: kSubHeadingHintTextStyle),
-              ),
-          ]);
+        ],
+      );
     }
 
     bool checkAnswer() {

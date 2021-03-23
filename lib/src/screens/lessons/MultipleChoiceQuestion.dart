@@ -8,8 +8,6 @@ import 'package:frontend/src/config/client.dart';
 
 import 'package:frontend/src/model/QuestionItem.dart';
 
-typedef QuestionCallback = void Function(bool score);
-
 class MultipleChoiceQuestion extends StatelessWidget {
   final QuestionItem question;
   final QuestionCallback onAnswer;

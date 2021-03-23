@@ -11,10 +11,10 @@ class RenderText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List<TextItem> sortedItems =
     items.sort((a, b) => a.order.compareTo(b.order));
 
     return Wrap(
+      alignment: WrapAlignment.center,
       children: [
         for (var item in items)
           if (item.note != null)
@@ -27,10 +27,16 @@ class RenderText extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(item.text, style: kHeadingNoteTextStyle),
+              child: Text(item.text,
+                  style: kHeadingNoteTextStyle.copyWith(
+                      fontSize: kQuestionHeadingFontSize)),
             )
           else
-            Text(" " + item.text + " ", style: kHeadingTextStyle)
+            Text(
+              " " + item.text + " ",
+              style: kHeadingTextStyle.copyWith(
+                  fontSize: kQuestionHeadingFontSize),
+            )
       ],
     );
   }

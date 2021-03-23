@@ -9,6 +9,7 @@ import 'package:frontend/src/data/Question.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
 import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
+import 'package:frontend/src/screens/lessons/QuestionWrapper.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -33,6 +34,12 @@ class _QuestionControllerState extends State<QuestionController> {
     });
   }
 
+  void addScore2(bool score, QuestionItem question) {
+    setState(() {
+      scores.add(score);
+    });
+  }
+
   void setLessonLength(int length) {
     setState(() {
       lessonLength = length;
@@ -49,6 +56,7 @@ class _QuestionControllerState extends State<QuestionController> {
       appBar: AppBar(
         centerTitle: true,
       ),
+      backgroundColor: Colors.white,
       body: FutureBuilder(
         future: sharedPreferenceService.token,
         builder: (BuildContext ctx, AsyncSnapshot<String> snapshot) {
@@ -92,43 +100,41 @@ class _QuestionControllerState extends State<QuestionController> {
                       QuestionItem item =
                           QuestionItem.fromJson(items[scores.length]);
 
-                      if (item.type == "MULTIPLE_CHOICE")
-                        return MultipleChoiceQuestion(
+                      return QuestionWrapper(
                           question: item,
-                          onAnswer: (bool answer) => addScore(answer),
-                        );
+                          onAnswer: (bool score) => addScore(score));
 
-                      return Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            RenderText(items: item.text),
-                            if (items[scores.length]['image'] != null)
-                              Image(
-                                image: NetworkImage(
-                                    Config.server +
-                                        '/images/' +
-                                        items[scores.length]['image'],
-                                    headers: {
-                                      "Access-Control-Allow-Origin": "*"
-                                    }),
-                              ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                if (item.options != null)
-                                  RenderOptions(
-                                    question: item,
-                                    onAnswer: (bool answer) => addScore(answer),
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
+                      // return Container(
+                      //   alignment: Alignment.center,
+                      //   child: Column(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       RenderText(items: item.text),
+                      //       if (items[scores.length]['image'] != null)
+                      //         Image(
+                      //           image: NetworkImage(
+                      //               Config.server +
+                      //                   '/images/' +
+                      //                   items[scores.length]['image'],
+                      //               headers: {
+                      //                 "Access-Control-Allow-Origin": "*"
+                      //               }),
+                      //         ),
+                      //       Column(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           if (item.options != null)
+                      //             RenderOptions(
+                      //               question: item,
+                      //               onAnswer: (bool answer) => addScore(answer),
+                      //             ),
+                      //         ],
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
                     },
                   ),
                 ),

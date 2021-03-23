@@ -10,18 +10,29 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../constants.dart';
 
 typedef QuestionCallback = void Function(bool score);
+typedef SelectCallback = void Function(List<dynamic> values);
 
 class RenderMultiSelectPianoOptions extends StatefulWidget {
   final QuestionItem question;
   final QuestionCallback onAnswer;
+  final SelectCallback onSelect;
+  final selectedOptions;
 
-  const RenderMultiSelectPianoOptions({Key key, this.question, this.onAnswer})
+  const RenderMultiSelectPianoOptions(
+      {Key key,
+      this.question,
+      this.onAnswer,
+      this.onSelect,
+      this.selectedOptions})
       : super(key: key);
 
   @override
   _RenderMultiSelectPianoOptionsState createState() =>
       _RenderMultiSelectPianoOptionsState(
-          question: question, onAnswer: onAnswer);
+          question: question,
+          onAnswer: onAnswer,
+          onSelect: onSelect,
+          selectedOptions: selectedOptions);
 }
 
 class _RenderMultiSelectPianoOptionsState
@@ -46,14 +57,14 @@ class _RenderMultiSelectPianoOptionsState
     // });
   }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   _loadSoundFont();
-  // }
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _loadSoundFont();
+  }
 
   final QuestionItem question;
   final QuestionCallback onAnswer;
-  var selectedOptions = [];
+  final SelectCallback onSelect;
+  final List<dynamic> selectedOptions;
 
   final Map<String, int> notes = {
     'C': 24,
@@ -70,7 +81,8 @@ class _RenderMultiSelectPianoOptionsState
     "B": 35,
   };
 
-  _RenderMultiSelectPianoOptionsState({this.question, this.onAnswer});
+  _RenderMultiSelectPianoOptionsState(
+      {this.question, this.onAnswer, this.onSelect, this.selectedOptions});
 
   @override
   Widget build(BuildContext context) {
@@ -81,46 +93,10 @@ class _RenderMultiSelectPianoOptionsState
       convertedOptions.add(new Option(id: i, name: sortedOptions[i]));
     }
 
-    Column renderIncorrectAnswer() {
-      return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Answer Incorrect",
-              style: kSubHeadingAnswerTextStyle,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-                'The correct answer was ${question.answerArr.map((e) => "$e")}',
-                style: kSubHeadingAnswerTextStyle),
-            if (question.answerHint != null)
-              Container(
-                margin: EdgeInsets.only(top: 10.0),
-                child: Text(question.answerHint,
-                    textAlign: TextAlign.center,
-                    style: kSubHeadingHintTextStyle),
-              ),
-          ]);
-    }
-
-    bool checkAnswer() {
-      List<String> items = [];
-
-      for (var item in selectedOptions) {
-        items.add(item.name);
-      }
-
-      print(listEquals(items, question.answerArr));
-
-      return listEquals(items, question.answerArr);
-    }
-
-    void handleOnPress(value, context) {
-      onAnswer(value);
-      Navigator.pop(context);
+    void handleAnswer(dynamic item) {
+      var options = selectedOptions;
+      options.contains(item) ? options.remove(item) : options.add(item);
+      onSelect(options);
     }
 
     void playNote(int note) {
@@ -136,7 +112,6 @@ class _RenderMultiSelectPianoOptionsState
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("Media query ${mediaQuery.size.width}"),
         MultiSelectChipField(
           showHeader: false,
           searchHint: "Select multiple answers by tapping them",
@@ -171,12 +146,7 @@ class _RenderMultiSelectPianoOptionsState
                       child: Center(child: Text(item.label)),
                       onTapDown: (_) => {
                         playNote(notes[item.label] + (12 * 3)),
-                        setState(() {
-                          selectedOptions.contains(item.value)
-                              ? selectedOptions.remove(item.value)
-                              : selectedOptions.add(item.value);
-                          // selectedOptions = values;
-                        })
+                        handleAnswer(item.value)
                       },
                     ),
                   ),
@@ -184,78 +154,8 @@ class _RenderMultiSelectPianoOptionsState
               ),
             );
           },
-          onTap: (values) {
-            setState(() {
-              selectedOptions = values;
-            });
-          },
         ),
-        // Positioned(
-        //   bottom: 0.0,
-        //   left: 0.0,
-        //   width: 200.0,
-        //   child:
-        ButtonBar(
-          alignment: MainAxisAlignment.center,
-          children: [
-            FlatButton(
-              minWidth: mediaQuery.size.width,
-              color: selectedOptions.length < 1 ? Colors.grey : Colors.orange,
-              child: const Text(
-                'Done',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: selectedOptions.length < 1
-                  ? () => {}
-                  : () => {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          isDismissible: false,
-                          enableDrag: false,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: 200,
-                              color: checkAnswer()
-                                  ? Colors.green
-                                  : Colors.red[600],
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    if (!checkAnswer())
-                                      renderIncorrectAnswer()
-                                    else
-                                      Text(
-                                        "Answer Correct!",
-                                        style: kSubHeadingAnswerTextStyle,
-                                      ),
-                                    SizedBox(height: 20),
-                                    ElevatedButton(
-                                        child: const Text('Next'),
-                                        onPressed: () => handleOnPress(
-                                            checkAnswer(), context))
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      },
-            )
-          ],
-        ),
-        // ),
       ],
     );
   }
 }
-
-// class RenderMultiSelectPianoOptions extends StatelessWidget {
-//   final QuestionItem question;
-//   final QuestionCallback onAnswer;
-
-//   const RenderMultiSelectPianoOptions({Key? key, this.question, this.onAnswer})
-//       : super(key: key);
-
-// }

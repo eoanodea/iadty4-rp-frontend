@@ -65,9 +65,9 @@ class Question {
     }
     """;
 
-  static String completeQuestion = """
-    mutation(\$userId: String!, \$lessonId: String!) {
-      completeQuestion(userId: \$userId, lessonId: \$lessonId) {
+  static String answerQuestion = """
+    mutation(\$id: String!, \$answer: String, \$answerArr: [String]) {
+      answerQuestion(id: \$id, answer: \$answer, answerArr: \$answerArr) {
         id
       }
     }

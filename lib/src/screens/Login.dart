@@ -8,6 +8,7 @@ import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../constants.dart';
 import 'Register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -136,41 +137,42 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Text(
           isLoading ? 'Logging in...' : 'Login',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: kbodyTextStyle.copyWith(color: Colors.white),
+          // style: TextStyle(fontSize: 20, color: Colors.white),
         ),
       ),
     );
   }
 
   Widget _createAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RegisterPage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Don\'t have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Register',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 20),
+      padding: EdgeInsets.all(15),
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Don\'t have an account ?',
+            style: kSubbodyTextStyle,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()));
+            },
+            child: Text('Register',
+                style: kSubbodyTextStyle.copyWith(color: Color(0xfff79c4f))
+                // style: TextStyle(
+                //     color: Color(0xfff79c4f),
+                //     fontSize: 13,
+                //     fontWeight: FontWeight.w600),
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -178,13 +180,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _title() {
     return RichText(
       text: TextSpan(
-        text: 'Login',
-        style: GoogleFonts.openSans(
-          fontSize: 30,
-          fontWeight: FontWeight.w900,
-          color: Colors.black,
-        ),
-      ),
+          text: 'Login',
+          style: kHeadingTextStyle.copyWith(color: Colors.black)),
     );
   }
 

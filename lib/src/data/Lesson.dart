@@ -48,8 +48,8 @@ class Lesson {
     """;
 
   static String completeLesson = """
-    mutation(\$userId: String!, \$lessonId: String!) {
-      completeLesson(userId: \$userId, lessonId: \$lessonId) {
+    mutation(\$lessonId: String!) {
+      completeLesson(lessonId: \$lessonId) {
         id
       }
     }

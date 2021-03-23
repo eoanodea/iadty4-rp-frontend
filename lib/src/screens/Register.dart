@@ -6,6 +6,7 @@ import 'package:frontend/src/data/Auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+import '../constants.dart';
 import 'Login.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -144,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         child: Text(
           isLoading ? 'Registering...' : 'Register',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: kbodyTextStyle.copyWith(color: Colors.white),
         ),
       ),
     );
@@ -165,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: <Widget>[
             Text(
               'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              style: kSubbodyTextStyle,
             ),
             SizedBox(
               width: 10,
@@ -187,11 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return RichText(
       text: TextSpan(
         text: 'Register',
-        style: GoogleFonts.openSans(
-          fontSize: 30,
-          fontWeight: FontWeight.w900,
-          color: Colors.black,
-        ),
+        style: kHeadingTextStyle.copyWith(color: Colors.black),
       ),
     );
   }

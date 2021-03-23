@@ -44,44 +44,45 @@ class RenderOptions extends StatelessWidget {
     }
 
     return MultiSelectChipDisplay(
-        alignment: Alignment.center,
-        items: convertedOptions
-            .map((e) => MultiSelectItem<Option>(e, e.name))
-            .toList(),
-        onTap: (value) {
-          showModalBottomSheet<void>(
-            context: context,
-            isDismissible: false,
-            enableDrag: false,
-            builder: (BuildContext context) {
-              return Container(
-                height: 200,
-                color: value.name == question.answer
-                    ? Colors.green
-                    : Colors.red[600],
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (value.name != question.answer)
-                        renderIncorrectAnswer()
-                      else
-                        Text(
-                          "Answer Correct!",
-                          style: kSubHeadingAnswerTextStyle,
-                        ),
-                      SizedBox(height: 50),
-                      ElevatedButton(
-                          child: const Text('Next'),
-                          onPressed: () => handleOnPress(value, context))
-                    ],
-                  ),
+      alignment: Alignment.center,
+      items: convertedOptions
+          .map((e) => MultiSelectItem<Option>(e, e.name))
+          .toList(),
+      onTap: (value) {
+        showModalBottomSheet<void>(
+          context: context,
+          isDismissible: false,
+          enableDrag: false,
+          builder: (BuildContext context) {
+            return Container(
+              height: 200,
+              color: value.name == question.answer
+                  ? Colors.green
+                  : Colors.red[600],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (value.name != question.answer)
+                      renderIncorrectAnswer()
+                    else
+                      Text(
+                        "Answer Correct!",
+                        style: kSubHeadingAnswerTextStyle,
+                      ),
+                    SizedBox(height: 50),
+                    ElevatedButton(
+                        child: const Text('Next'),
+                        onPressed: () => handleOnPress(value, context))
+                  ],
                 ),
-              );
-            },
-          );
-          // print("value tap! ${value.name == question.answer}");
-        });
+              ),
+            );
+          },
+        );
+        // print("value tap! ${value.name == question.answer}");
+      },
+    );
   }
 }

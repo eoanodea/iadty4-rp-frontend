@@ -65,8 +65,9 @@ class _MyApp extends State {
         title: 'Easy Piano',
         theme: ThemeData(
           primarySwatch: Colors.orange,
-          textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
-            bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
+          textTheme: GoogleFonts.quicksandTextTheme(textTheme).copyWith(
+            headline1: GoogleFonts.quicksand(fontWeight: FontWeight.w700),
+            bodyText1: GoogleFonts.quicksand(textStyle: textTheme.bodyText1),
           ),
         ),
         debugShowCheckedModeBanner: false,
@@ -79,7 +80,7 @@ class _MyApp extends State {
           '/register': (context) => RegisterPage(),
           '/profile': (context) => ProfilePage(),
           '/piano': (context) => PianoPage(),
-          "/dashboard": (BuildContext context) => Dashboard(),
+          '/dashboard': (BuildContext context) => Dashboard(),
         },
       ),
     );
