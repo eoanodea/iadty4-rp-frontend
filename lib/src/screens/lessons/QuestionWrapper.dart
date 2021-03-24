@@ -5,13 +5,14 @@ import 'package:frontend/src/components/question/RenderOptions.dart';
 import 'package:frontend/src/components/question/RenderText.dart';
 import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/config/client.dart';
+import 'package:frontend/src/data/Option.dart';
 import 'package:frontend/src/data/Question.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:frontend/src/screens/lessons/QuestionAnswer.dart';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-typedef QuestionCallback = void Function(bool score);
+typedef QuestionCallback = void Function(int score);
 
 class QuestionWrapper extends StatefulWidget {
   final QuestionItem question;
@@ -28,19 +29,27 @@ class QuestionWrapper extends StatefulWidget {
 class _QuestionWrapperState extends State<QuestionWrapper> {
   final QuestionItem question;
   final QuestionCallback onAnswer;
-  var selectedOptions = [];
+  List<Option> selectedOptions = [];
+  int points = -1;
+
   _QuestionWrapperState({this.question, this.onAnswer});
 
-  void answerQuestion(answer, RunMutation runMutation) {
-    // runMutation
+  void answerQuestion(RunMutation runMutation, List<Option> options) {
     if (question.type == "MULTIPLE_CHOICE") {
-      runMutation({"id": question.id, "answerArr": answer});
+      List<String> answerArr = []; //selectedOptions.forE((el) => el.name);
+      print(options);
+      options.forEach((element) => {answerArr.add(element.name)});
+
+      runMutation({"id": question.id, "answerArr": answerArr, "answer": ""});
     } else
-      runMutation({"id": question.id, "answer": answer});
+      runMutation({"id": question.id, "answer": selectedOptions});
+  }
+
+  void nextQuestion(int points) {
+    onAnswer(points);
   }
 
   void onSelectOption(values) {
-    print('yeehaw');
     setState(() {
       selectedOptions = values;
     });
@@ -52,12 +61,13 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
         onSelect: (values) => onSelectOption(values),
         selectedOptions: selectedOptions,
         question: question,
-        onAnswer: (bool answer) => answerQuestion(answer, runMutation),
+        // onAnswer: (bool answer) => answerQuestion(runMutation),
       );
 
     return RenderOptions(
+      onSelect: (values) => onSelectOption(values),
       question: question,
-      onAnswer: (bool answer) => answerQuestion(answer, runMutation),
+      // onAnswer: (bool answer) => answerQuestion(runMutation),
     );
   }
 
@@ -100,9 +110,14 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
           }
 
           if (result.data != null) {
+            setState(() {
+              points = result.data['answerQuestion'];
+            });
+
             // print(result.data['login']['token']);
             // String token = result.data['login']['token'];
-            UtilFs.showToast("Question Answered", context);
+            // UtilFs.showToast(
+            //     "Question Answered ${result.data['answerQuestion']}", context);
             // await sharedPreferenceService.setToken(token);
             // Config.initailizeClient(token);
             // Navigator.pushReplacementNamed(context, "/dashboard");
@@ -139,6 +154,10 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
             child: QuestionAnswer(
               question: question,
               selectedOptions: selectedOptions,
+              answerQuestion: (List<Option> options) =>
+                  answerQuestion(runMutation, options),
+              nextQuestion: (int points) => nextQuestion(points),
+              points: points,
             ),
           ),
         );

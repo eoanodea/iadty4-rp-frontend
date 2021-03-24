@@ -10,7 +10,7 @@ class CompleteLesson extends StatefulWidget {
   final String lessonId;
   final String userId;
   // final List<QuestionItem> questions;
-  final List<bool> score;
+  final List<int> score;
 
   CompleteLesson(
       {Key key,
@@ -35,13 +35,13 @@ class _CompleteLessonState extends State<CompleteLesson> {
   final String lessonId;
   final String userId;
   // final List<QuestionItem> questions;
-  List<bool> score;
+  List<int> score;
   // int totalCorrect;
 
   int countScores() {
     int result = 0;
     for (var item in score) {
-      if (item == true) result += 1;
+      if (item != 0) result += 1;
     }
     // score.forEach((element) {
     // if(element == true) {

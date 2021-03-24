@@ -1,14 +1,10 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/EmptyState.dart';
-import 'package:frontend/src/components/question/RenderOptions.dart';
-import 'package:frontend/src/components/question/RenderText.dart';
 import 'package:frontend/src/config/client.dart';
-
 import 'package:frontend/src/data/Question.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 import 'package:frontend/src/screens/lessons/CompleteLesson.dart';
-import 'package:frontend/src/screens/lessons/MultipleChoiceQuestion.dart';
 import 'package:frontend/src/screens/lessons/QuestionWrapper.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -25,16 +21,10 @@ class QuestionController extends StatefulWidget {
 
 class _QuestionControllerState extends State<QuestionController> {
   final String lessonId;
-  List<bool> scores = [];
+  List<int> scores = [];
   int lessonLength = 0;
 
-  void addScore(bool score) {
-    setState(() {
-      scores.add(score);
-    });
-  }
-
-  void addScore2(bool score, QuestionItem question) {
+  void addScore(int score) {
     setState(() {
       scores.add(score);
     });
@@ -102,39 +92,7 @@ class _QuestionControllerState extends State<QuestionController> {
 
                       return QuestionWrapper(
                           question: item,
-                          onAnswer: (bool score) => addScore(score));
-
-                      // return Container(
-                      //   alignment: Alignment.center,
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                      //     children: [
-                      //       RenderText(items: item.text),
-                      //       if (items[scores.length]['image'] != null)
-                      //         Image(
-                      //           image: NetworkImage(
-                      //               Config.server +
-                      //                   '/images/' +
-                      //                   items[scores.length]['image'],
-                      //               headers: {
-                      //                 "Access-Control-Allow-Origin": "*"
-                      //               }),
-                      //         ),
-                      //       Column(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           if (item.options != null)
-                      //             RenderOptions(
-                      //               question: item,
-                      //               onAnswer: (bool answer) => addScore(answer),
-                      //             ),
-                      //         ],
-                      //       ),
-                      //     ],
-                      //   ),
-                      // );
+                          onAnswer: (int score) => addScore(score));
                     },
                   ),
                 ),

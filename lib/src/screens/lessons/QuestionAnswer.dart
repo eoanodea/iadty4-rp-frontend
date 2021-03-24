@@ -1,35 +1,50 @@
+// @dart=2.9
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/src/data/Option.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../../constants.dart';
 
+typedef ResetCallback = void Function();
+typedef AnswerQuestionCallback = void Function(List<Option> options);
+typedef NextQuestionCallback = void Function(int points);
+
 class QuestionAnswer extends StatelessWidget {
   // final selectedOptions = [];
-  final selectedOptions;
+  final List<Option> selectedOptions;
   final QuestionItem question;
+  final int points;
+  final AnswerQuestionCallback answerQuestion;
+  final NextQuestionCallback nextQuestion;
+  // final ResetCallback reset;
+  // final RunMutation runMutation;
 
-  const QuestionAnswer(
-      {Key? key, required this.question, required this.selectedOptions})
-      : super(key: key);
+  const QuestionAnswer({
+    Key key,
+    this.question,
+    this.selectedOptions,
+    this.answerQuestion,
+    this.nextQuestion,
+    // this.runMutation,
+    this.points,
+    // this.reset
+  }) : super(key: key);
 
   void handleOnPress(value, context) {
     // onAnswer(value);
+
+    nextQuestion(this.points);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     bool checkAnswer() {
-      List<String> items = [];
-
-      for (var item in selectedOptions) {
-        items.add(item.name);
-      }
-
-      print(listEquals(items, question.answerArr));
-
-      return listEquals(items, question.answerArr);
+      return points != 0;
     }
 
     final mediaQuery = MediaQuery.of(context);
@@ -73,6 +88,51 @@ class QuestionAnswer extends StatelessWidget {
       );
     }
 
+    void renderModal() {
+      showModalBottomSheet<void>(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        builder: (BuildContext context) {
+          bool answer = checkAnswer();
+          return Container(
+            height: 200,
+            color: Colors.grey[200],
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  renderAnswer(answer),
+                  SizedBox(height: 20),
+                  ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(width: mediaQuery.size.width),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: answer
+                              ? MaterialStateProperty.all<Color>(Colors.green)
+                              : MaterialStateProperty.all<Color>(
+                                  Colors.red.shade400),
+                        ),
+                        child: const Text(
+                          'Next',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () => handleOnPress(answer, context),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: [
@@ -83,59 +143,13 @@ class QuestionAnswer extends StatelessWidget {
                 backgroundColor: selectedOptions.length < 1
                     ? MaterialStateProperty.all<Color>(Colors.grey)
                     : MaterialStateProperty.all<Color>(Colors.orange)),
-            // color: selectedOptions < 1 ? Colors.grey : Colors.orange,
             child: const Text(
               'Done',
               style: TextStyle(color: Colors.white),
             ),
             onPressed: selectedOptions.length < 1
                 ? () => {}
-                : () => {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        isDismissible: false,
-                        enableDrag: false,
-                        builder: (BuildContext context) {
-                          bool answer = checkAnswer();
-                          return Container(
-                            height: 200,
-                            color: Colors.grey[200],
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  renderAnswer(answer),
-                                  SizedBox(height: 20),
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints.tightFor(
-                                        width: mediaQuery.size.width),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor: answer
-                                              ? MaterialStateProperty.all<
-                                                  Color>(Colors.green)
-                                              : MaterialStateProperty.all<
-                                                  Color>(Colors.red.shade400),
-                                        ),
-                                        child: const Text(
-                                          'Next',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        onPressed: () => handleOnPress(
-                                            checkAnswer(), context),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    },
+                : () => {answerQuestion(selectedOptions), renderModal()},
           ),
         ),
       ],

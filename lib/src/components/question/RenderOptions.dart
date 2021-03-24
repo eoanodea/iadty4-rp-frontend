@@ -7,12 +7,14 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../constants.dart';
 
 typedef QuestionCallback = void Function(bool score);
+typedef SelectCallback = void Function(List<dynamic> values);
 
 class RenderOptions extends StatelessWidget {
   final QuestionItem question;
   final QuestionCallback onAnswer;
+  final SelectCallback onSelect;
 
-  const RenderOptions({Key key, this.question, this.onAnswer})
+  const RenderOptions({Key key, this.question, this.onAnswer, this.onSelect})
       : super(key: key);
 
   @override
