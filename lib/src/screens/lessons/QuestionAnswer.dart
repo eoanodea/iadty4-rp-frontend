@@ -5,23 +5,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/data/Option.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:collection/collection.dart';
 
 import '../../constants.dart';
 
 typedef ResetCallback = void Function();
-typedef AnswerQuestionCallback = void Function(List<Option> options);
-typedef NextQuestionCallback = void Function(int points);
+typedef AnswerQuestionCallback = void Function(List<String> options);
+typedef NextQuestionCallback = void Function();
 
 class QuestionAnswer extends StatelessWidget {
-  // final selectedOptions = [];
   final List<Option> selectedOptions;
   final QuestionItem question;
-  final int points;
   final AnswerQuestionCallback answerQuestion;
   final NextQuestionCallback nextQuestion;
-  // final ResetCallback reset;
-  // final RunMutation runMutation;
 
   const QuestionAnswer({
     Key key,
@@ -29,25 +25,40 @@ class QuestionAnswer extends StatelessWidget {
     this.selectedOptions,
     this.answerQuestion,
     this.nextQuestion,
-    // this.runMutation,
-    this.points,
-    // this.reset
   }) : super(key: key);
 
   void handleOnPress(value, context) {
-    // onAnswer(value);
-
-    nextQuestion(this.points);
+    nextQuestion();
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     bool checkAnswer() {
-      return points != 0;
+      bool result = false;
+      List<String> answerArr = [];
+      selectedOptions.forEach((el) => answerArr.add(el.name));
+      answerQuestion(answerArr);
+
+      if (question.type == "MULTIPLE_CHOICE") {
+        Function equals = const UnorderedIterableEquality().equals;
+
+        result = equals(question.answerArr, answerArr);
+      } else {
+        result = selectedOptions[0].name == question.answer;
+      }
+
+      return result;
     }
 
     final mediaQuery = MediaQuery.of(context);
+
+    String renderIncorrectAnswerText() {
+      if (question.type == "MULTIPLE_CHOICE") {
+        return 'The correct answer was ${question.answerArr.map((e) => "$e")}';
+      }
+      return "The correct answer was ${question.answer}";
+    }
 
     Padding renderAnswer(bool answer) {
       return Padding(
@@ -72,17 +83,27 @@ class QuestionAnswer extends StatelessWidget {
             if (!answer)
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                    'The correct answer was ${question.answerArr.map((e) => "$e")}',
+                child: Text(renderIncorrectAnswerText(),
                     style: kIncorrectAnswerHintTextStyle),
               ),
-            if (question.answerHint != null)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(question.answerHint,
-                    textAlign: TextAlign.center,
-                    style: kIncorrectAnswerHintTextStyle),
-              ),
+            if (!answer && question.answerHint != null)
+              Column(
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(question.answerHint,
+                        style: kIncorrectAnswerHintTextStyle.copyWith(
+                            fontSize: kSubBodyFontSize)),
+                  ),
+                ],
+              )
+            else
+              SizedBox(
+                height: 10,
+              )
           ],
         ),
       );
@@ -96,7 +117,7 @@ class QuestionAnswer extends StatelessWidget {
         builder: (BuildContext context) {
           bool answer = checkAnswer();
           return Container(
-            height: 200,
+            height: 220,
             color: Colors.grey[200],
             child: Center(
               child: Column(
@@ -104,7 +125,6 @@ class QuestionAnswer extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   renderAnswer(answer),
-                  SizedBox(height: 20),
                   ConstrainedBox(
                     constraints:
                         BoxConstraints.tightFor(width: mediaQuery.size.width),
@@ -147,9 +167,8 @@ class QuestionAnswer extends StatelessWidget {
               'Done',
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: selectedOptions.length < 1
-                ? () => {}
-                : () => {answerQuestion(selectedOptions), renderModal()},
+            onPressed:
+                selectedOptions.length < 1 ? () => {} : () => {renderModal()},
           ),
         ),
       ],

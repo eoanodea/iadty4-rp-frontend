@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const kHeadingFontSize = 38.0;
-const kQuestionHeadingFontSize = 30.0;
+const kQuestionHeadingFontSize = 26.0;
 const kSubHeadingFontSize = 22.0;
 const kHintFontSize = 18.0;
 const kBodyFontSize = 20.0;
-const kSubBodyFontSize = 16.0;
+const kSubBodyFontSize = 17.0;
 
 final kHeadingTextStyle = GoogleFonts.quicksand(
     fontSize: kHeadingFontSize, fontWeight: FontWeight.w700);

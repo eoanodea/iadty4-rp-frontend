@@ -62,85 +62,114 @@ class _CompleteLessonState extends State<CompleteLesson> {
 
   @override
   Widget build(BuildContext context) {
-    return Mutation(
-      options: MutationOptions(
-        errorPolicy: ErrorPolicy.all,
-        documentNode: gql(Lesson.completeLesson),
-        update: (Cache cache, QueryResult result) {
-          if (result.hasException) {
-            UtilFs.showToast("Could not complete lesson", context);
+    final mediaQuery = MediaQuery.of(context);
 
-            if (result.exception.clientException is NetworkException) {
-              // handle network issues, maybe
-              print("Network Exception!");
-              setState(() {
-                error = "Could not connect to server";
-              });
+    return Scaffold(
+      backgroundColor: Colors.white,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Mutation(
+          options: MutationOptions(
+            errorPolicy: ErrorPolicy.all,
+            documentNode: gql(Lesson.completeLesson),
+            update: (Cache cache, QueryResult result) {
+              if (result.hasException) {
+                UtilFs.showToast("Could not complete lesson", context);
+
+                if (result.exception.clientException is NetworkException) {
+                  // handle network issues, maybe
+                  print("Network Exception!");
+                  setState(() {
+                    error = "Could not connect to server";
+                  });
+                  return cache;
+                }
+
+                setState(() {
+                  error = result.exception.graphqlErrors[0].message;
+                });
+                return cache;
+              }
               return cache;
-            }
+            },
+            onError: (dynamic error) {
+              print("Error!! $error");
+            },
+            onCompleted: (dynamic result) async {
+              setState(() {
+                isLoading = false;
+                error = "";
+              });
+              if (result == null) {
+                return;
+              }
 
-            setState(() {
-              error = result.exception.graphqlErrors[0].message;
-            });
-            return cache;
-          }
-          return cache;
-        },
-        onError: (dynamic error) {
-          print("Error!! $error");
-        },
-        onCompleted: (dynamic result) async {
-          setState(() {
-            isLoading = false;
-            error = "";
-          });
-          if (result == null) {
-            return;
-          }
-
-          if (result.data != null) {
-            // print(result.data['login']['token']);
-            // String token = result.data['login']['token'];
-            UtilFs.showToast("Lesson Complete", context);
-            // await sharedPreferenceService.setToken(token);
-            // Config.initailizeClient(token);
-            // Navigator.pushReplacementNamed(context, "/dashboard");
-            Navigator.pop(context);
-            return;
-          }
-        },
-      ),
-      builder: (RunMutation runMutation, QueryResult result) {
-        return Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.check,
-                size: 80.0,
-                color: Colors.blue,
-              ),
-              Text(
-                "Lesson Complete",
-                style: kHeadingTextStyle,
-              ),
-              Text(
-                "You answered ${countScores()} correct out of ${score.length}",
-                style: kSubHeadingTextStyle,
-              ),
-              FlatButton(
-                onPressed: () =>
-                    isLoading ? null : runMutation({"lessonId": lessonId}),
-                child: Text(isLoading ? "Saving..." : "Done"),
-                color: Colors.orange,
-                textColor: Colors.white,
-              ),
-            ],
+              if (result.data != null) {
+                // print(result.data['login']['token']);
+                // String token = result.data['login']['token'];
+                UtilFs.showToast("Lesson Complete", context);
+                // await sharedPreferenceService.setToken(token);
+                // Config.initailizeClient(token);
+                // Navigator.pushReplacementNamed(context, "/dashboard");
+                Navigator.pop(context);
+                return;
+              }
+            },
           ),
-        );
-      },
+          builder: (RunMutation runMutation, QueryResult result) {
+            return ButtonBar(
+              alignment: MainAxisAlignment.center,
+              children: [
+                ConstrainedBox(
+                  constraints:
+                      BoxConstraints.tightFor(width: mediaQuery.size.width),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: isLoading
+                            ? MaterialStateProperty.all<Color>(Colors.grey)
+                            : MaterialStateProperty.all<Color>(Colors.orange)),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () =>
+                        isLoading ? null : runMutation({"lessonId": lessonId}),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.check,
+              size: 80.0,
+              color: Colors.blue,
+            ),
+            Text(
+              "Lesson Complete",
+              style: kHeadingTextStyle,
+            ),
+            Text(
+              "You answered ${countScores()} correct out of ${score.length}",
+              style: kSubHeadingTextStyle,
+            ),
+            // FlatButton(
+            //   onPressed: () =>
+            //       isLoading ? null : runMutation({"lessonId": lessonId}),
+            //   child: Text(isLoading ? "Saving..." : "Done"),
+            //   color: Colors.orange,
+            //   textColor: Colors.white,
+            // ),
+          ],
+        ),
+      ),
     );
   }
 }

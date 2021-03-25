@@ -7,84 +7,95 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../constants.dart';
 
 typedef QuestionCallback = void Function(bool score);
-typedef SelectCallback = void Function(List<dynamic> values);
+typedef SelectCallback = void Function(List<Option> values);
 
 class RenderOptions extends StatelessWidget {
   final QuestionItem question;
   final QuestionCallback onAnswer;
   final SelectCallback onSelect;
+  final List<Option> selectedOption;
 
-  const RenderOptions({Key key, this.question, this.onAnswer, this.onSelect})
+  const RenderOptions(
+      {Key key,
+      this.question,
+      this.onAnswer,
+      this.onSelect,
+      this.selectedOption})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     List<Option> convertedOptions = [];
+
     for (var i = 0; i < question.options.length; i++) {
       convertedOptions.add(new Option(id: i, name: question.options[i]));
     }
 
-    Column renderIncorrectAnswer() {
-      return Column(children: [
-        Text(
-          "Answer Incorrect",
-          style: kSubHeadingAnswerTextStyle,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text('The correct answer was ${question.answer}',
-            style: kSubHeadingAnswerTextStyle),
-        if (question.answerHint != null)
-          Text(question.answerHint, style: kSubHeadingHintTextStyle),
-      ]);
-    }
-
-    void handleOnPress(value, context) {
-      onAnswer(value.name == question.answer);
-      Navigator.pop(context);
-    }
-
-    return MultiSelectChipDisplay(
-      alignment: Alignment.center,
-      items: convertedOptions
-          .map((e) => MultiSelectItem<Option>(e, e.name))
-          .toList(),
-      onTap: (value) {
-        showModalBottomSheet<void>(
-          context: context,
-          isDismissible: false,
-          enableDrag: false,
-          builder: (BuildContext context) {
-            return Container(
-              height: 200,
-              color: value.name == question.answer
-                  ? Colors.green
-                  : Colors.red[600],
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    if (value.name != question.answer)
-                      renderIncorrectAnswer()
-                    else
-                      Text(
-                        "Answer Correct!",
-                        style: kSubHeadingAnswerTextStyle,
-                      ),
-                    SizedBox(height: 50),
-                    ElevatedButton(
-                        child: const Text('Next'),
-                        onPressed: () => handleOnPress(value, context))
-                  ],
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          MultiSelectChipField(
+            showHeader: false,
+            searchHint: "Select multiple answers by tapping them",
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.transparent),
+            ),
+            // alignment: Alignment.center,
+            items: convertedOptions
+                .map((e) => MultiSelectItem<Option>(e, e.name))
+                .toList(),
+            itemBuilder: (item, state) {
+              // return your custom widget here
+              return Container(
+                width: (mediaQuery.size.width / convertedOptions.length) -
+                    (convertedOptions.length * 4.0),
+                height: 250.0,
+                margin: EdgeInsets.all(5.0),
+                child: Semantics(
+                  button: true,
+                  hint: "Note of ${item.label}",
+                  child: Material(
+                    borderRadius: borderRadius,
+                    color: selectedOption.length > 0 &&
+                            selectedOption[0] == item.value
+                        ? Colors.orange
+                        : Colors.grey[100],
+                    child: InkWell(
+                      borderRadius: borderRadius,
+                      highlightColor: Colors.grey,
+                      onTap: () {},
+                      child: Center(
+                          child: Text(
+                        item.label,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18.0,
+                            color: selectedOption.length > 0 &&
+                                    selectedOption[0] == item.value
+                                ? Colors.white
+                                : Colors.black87),
+                      )),
+                      onTapDown: (_) => {
+                        if (selectedOption.length == 0 ||
+                            selectedOption[0] != item.value)
+                          {
+                            onSelect([item.value])
+                          }
+                        else
+                          onSelect([])
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            );
-          },
-        );
-        // print("value tap! ${value.name == question.answer}");
-      },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

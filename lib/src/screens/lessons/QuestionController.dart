@@ -22,11 +22,22 @@ class QuestionController extends StatefulWidget {
 class _QuestionControllerState extends State<QuestionController> {
   final String lessonId;
   List<int> scores = [];
+  int currentScore = -1;
   int lessonLength = 0;
 
   void addScore(int score) {
     setState(() {
-      scores.add(score);
+      // currentScore = score;
+      scores.add(currentScore);
+
+      // scores.add(score);
+    });
+  }
+
+  void nextQuestion(int points) {
+    setState(() {
+      scores.add(points);
+      // currentScore = -1;
     });
   }
 
@@ -42,67 +53,61 @@ class _QuestionControllerState extends State<QuestionController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-      ),
-      backgroundColor: Colors.white,
-      body: FutureBuilder(
-        future: sharedPreferenceService.token,
-        builder: (BuildContext ctx, AsyncSnapshot<String> snapshot) {
-          Widget children = Text('Something went wrong!');
-          if (snapshot.hasError) {
-            children = Text(snapshot.error);
-          }
-          if (snapshot.hasData) {
-            children = GraphQLProvider(
-              client: Config.initailizeClient(snapshot.data),
-              child: CacheProvider(
-                child: Container(
-                  child: Query(
-                    options: QueryOptions(
-                      documentNode: gql(Question.getQuestions),
-                      variables: {"lesson": lessonId},
-                    ),
-                    builder: (QueryResult result,
-                        {VoidCallback refetch, FetchMore fetchMore}) {
-                      if (result.hasException) {
-                        return EmptyState(message: result.exception.toString());
-                      }
-                      if (result.loading) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      final List<LazyCacheMap> items =
-                          (result.data['getQuestions'] as List<dynamic>)
-                              .cast<LazyCacheMap>();
-                      if (items.length == 0)
-                        return EmptyState(message: 'No Questions Found');
-
-                      if (scores.length >= items.length) {
-                        return CompleteLesson(
-                          // questions: items,
-                          score: scores,
-                          lessonId: lessonId,
-                          userId: result.data['get']['id'],
-                        );
-                      }
-
-                      QuestionItem item =
-                          QuestionItem.fromJson(items[scores.length]);
-
-                      return QuestionWrapper(
-                          question: item,
-                          onAnswer: (int score) => addScore(score));
-                    },
+    return FutureBuilder(
+      future: sharedPreferenceService.token,
+      builder: (BuildContext ctx, AsyncSnapshot<String> snapshot) {
+        Widget children = Text('Something went wrong!');
+        if (snapshot.hasError) {
+          children = Text(snapshot.error);
+        }
+        if (snapshot.hasData) {
+          children = GraphQLProvider(
+            client: Config.initailizeClient(snapshot.data),
+            child: CacheProvider(
+              child: Container(
+                child: Query(
+                  options: QueryOptions(
+                    documentNode: gql(Question.getQuestions),
+                    variables: {"lesson": lessonId},
                   ),
+                  builder: (QueryResult result,
+                      {VoidCallback refetch, FetchMore fetchMore}) {
+                    if (result.hasException) {
+                      return EmptyState(message: result.exception.toString());
+                    }
+                    if (result.loading) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    final List<LazyCacheMap> items =
+                        (result.data['getQuestions'] as List<dynamic>)
+                            .cast<LazyCacheMap>();
+                    if (items.length == 0)
+                      return EmptyState(message: 'No Questions Found');
+
+                    if (scores.length >= items.length) {
+                      return CompleteLesson(
+                        score: scores,
+                        lessonId: lessonId,
+                        userId: result.data['get']['id'],
+                      );
+                    }
+
+                    QuestionItem item =
+                        QuestionItem.fromJson(items[scores.length]);
+
+                    return QuestionWrapper(
+                      question: item,
+                      nextQuestion: (int score) => nextQuestion(score),
+                    );
+                  },
                 ),
               ),
-            );
-          }
+            ),
+          );
+        }
 
-          return children;
-        },
-      ),
+        return children;
+      },
     );
   }
 }

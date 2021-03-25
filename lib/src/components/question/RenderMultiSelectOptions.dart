@@ -137,12 +137,3 @@ class _RenderMultiSelectOptionsState extends State<RenderMultiSelectOptions> {
     );
   }
 }
-
-// class RenderMultiSelectOptions extends StatelessWidget {
-//   final QuestionItem question;
-//   final QuestionCallback onAnswer;
-
-//   const RenderMultiSelectOptions({Key? key, this.question, this.onAnswer})
-//       : super(key: key);
-
-// }

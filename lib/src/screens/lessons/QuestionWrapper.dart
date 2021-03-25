@@ -12,41 +12,38 @@ import 'package:frontend/src/screens/lessons/QuestionAnswer.dart';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-typedef QuestionCallback = void Function(int score);
+typedef AddScoreCallback = void Function(int score);
+typedef NextQuestionCallback = void Function(int score);
 
 class QuestionWrapper extends StatefulWidget {
   final QuestionItem question;
-  final QuestionCallback onAnswer;
+  final AddScoreCallback addScore;
+  final NextQuestionCallback nextQuestion;
 
-  const QuestionWrapper({Key key, this.question, this.onAnswer})
+  const QuestionWrapper(
+      {Key key, this.question, this.addScore, this.nextQuestion})
       : super(key: key);
 
   @override
-  _QuestionWrapperState createState() =>
-      _QuestionWrapperState(question: question, onAnswer: onAnswer);
+  _QuestionWrapperState createState() => _QuestionWrapperState(
+      question: question, addScore: addScore, nextQuestion: nextQuestion);
 }
 
 class _QuestionWrapperState extends State<QuestionWrapper> {
   final QuestionItem question;
-  final QuestionCallback onAnswer;
+  final AddScoreCallback addScore;
+  final NextQuestionCallback nextQuestion;
+
   List<Option> selectedOptions = [];
   int points = -1;
 
-  _QuestionWrapperState({this.question, this.onAnswer});
+  _QuestionWrapperState({this.question, this.addScore, this.nextQuestion});
 
-  void answerQuestion(RunMutation runMutation, List<Option> options) {
+  void answerQuestion(RunMutation runMutation, List<String> options) {
     if (question.type == "MULTIPLE_CHOICE") {
-      List<String> answerArr = []; //selectedOptions.forE((el) => el.name);
-      print(options);
-      options.forEach((element) => {answerArr.add(element.name)});
-
-      runMutation({"id": question.id, "answerArr": answerArr, "answer": ""});
+      runMutation({"id": question.id, "answerArr": options, "answer": ""});
     } else
-      runMutation({"id": question.id, "answer": selectedOptions});
-  }
-
-  void nextQuestion(int points) {
-    onAnswer(points);
+      runMutation({"id": question.id, "answer": options[0], "answerArr": []});
   }
 
   void onSelectOption(values) {
@@ -55,113 +52,86 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
     });
   }
 
-  Widget renderQuestionOptions(RunMutation runMutation) {
+  Widget renderQuestionOptions() {
     if (question.type == "MULTIPLE_CHOICE")
       return RenderMultiSelectPianoOptions(
         onSelect: (values) => onSelectOption(values),
         selectedOptions: selectedOptions,
         question: question,
-        // onAnswer: (bool answer) => answerQuestion(runMutation),
       );
 
     return RenderOptions(
       onSelect: (values) => onSelectOption(values),
       question: question,
-      // onAnswer: (bool answer) => answerQuestion(runMutation),
+      selectedOption: selectedOptions,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Mutation(
-      options: MutationOptions(
-        errorPolicy: ErrorPolicy.all,
-        documentNode: gql(Question.answerQuestion),
-        update: (Cache cache, QueryResult result) {
-          if (result.hasException) {
-            UtilFs.showToast("Could not complete lesson", context);
-
-            if (result.exception.clientException is NetworkException) {
-              // handle network issues, maybe
-              print("Network Exception!");
-              // setState(() {
-              //   error = "Could not connect to server";
-              // });
-              return;
-            }
-
-            // setState(() {
-            //   error = result.exception.graphqlErrors[0].message;
-            // });
-            return;
-          }
-          return;
-        },
-        onError: (dynamic error) {
-          print("Error!! $error");
-        },
-        onCompleted: (dynamic result) async {
-          // setState(() {
-          //   isLoading = false;
-          //   error = "";
-          // });
-          if (result == null) {
-            return;
-          }
-
-          if (result.data != null) {
-            setState(() {
-              points = result.data['answerQuestion'];
-            });
-
-            // print(result.data['login']['token']);
-            // String token = result.data['login']['token'];
-            // UtilFs.showToast(
-            //     "Question Answered ${result.data['answerQuestion']}", context);
-            // await sharedPreferenceService.setToken(token);
-            // Config.initailizeClient(token);
-            // Navigator.pushReplacementNamed(context, "/dashboard");
-            // Navigator.pop(context);
-            return;
-          }
-        },
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            RenderText(items: question.text),
+            if (question.image != null)
+              Image(
+                image: NetworkImage(Config.server + '/images/' + question.image,
+                    headers: {"Access-Control-Allow-Origin": "*"}),
+              ),
+            renderQuestionOptions()
+          ],
+        ),
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Mutation(
+          options: MutationOptions(
+            errorPolicy: ErrorPolicy.all,
+            documentNode: gql(Question.answerQuestion),
+            update: (Cache cache, QueryResult result) {
+              if (result.hasException) {
+                UtilFs.showToast("Could not answer question", context);
 
-      // runMutation({"id": question.id})
+                if (result.exception.clientException is NetworkException) {
+                  print("Network Exception!");
+                  return;
+                }
+                return;
+              }
+              return;
+            },
+            onError: (dynamic error) {
+              print("Error!! $error");
+            },
+            onCompleted: (dynamic result) async {
+              if (result == null) {
+                return;
+              }
 
-      builder: (RunMutation runMutation, QueryResult result) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RenderText(items: question.text),
-                if (question.image != null)
-                  Image(
-                    image: NetworkImage(
-                        Config.server + '/images/' + question.image,
-                        headers: {"Access-Control-Allow-Origin": "*"}),
-                  ),
-                renderQuestionOptions(runMutation)
-              ],
-            ),
+              if (result.data != null) {
+                setState(() {
+                  points = result.data['answerQuestion'];
+                });
+                return;
+              }
+            },
           ),
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: QuestionAnswer(
+          builder: (RunMutation runMutation, QueryResult result) {
+            return QuestionAnswer(
               question: question,
               selectedOptions: selectedOptions,
-              answerQuestion: (List<Option> options) =>
+              answerQuestion: (List<String> options) =>
                   answerQuestion(runMutation, options),
-              nextQuestion: (int points) => nextQuestion(points),
-              points: points,
-            ),
-          ),
-        );
-      },
+              nextQuestion: () => nextQuestion(points),
+            );
+          },
+        ),
+      ),
     );
   }
 }
