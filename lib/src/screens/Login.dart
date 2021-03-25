@@ -5,7 +5,6 @@ import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/config/client.dart';
 import 'package:frontend/src/data/Auth.dart';
 import 'package:frontend/src/services/SharedPreferenceService.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../constants.dart';

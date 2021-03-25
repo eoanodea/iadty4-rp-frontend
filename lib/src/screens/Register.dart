@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/Widget/CustomDivider.dart';
 import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/data/Auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../constants.dart';

@@ -1,6 +1,4 @@
 // @dart=2.9
-import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/src/data/Option.dart';
