@@ -28,6 +28,18 @@ class Auth {
         name
         email 
         createdAt
+        streak {
+          id
+          number
+        }
+        completedLessons {
+          id
+        }
+        incorrectQuestions {
+          id
+        }
+        points
+        level
       }
     }
     """;

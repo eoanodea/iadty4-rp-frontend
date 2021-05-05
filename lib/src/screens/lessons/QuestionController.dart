@@ -54,6 +54,11 @@ class _QuestionControllerState extends State<QuestionController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: CloseButton(),
+      ),
       backgroundColor: Colors.white,
       body: FutureBuilder(
         future: sharedPreferenceService.token,

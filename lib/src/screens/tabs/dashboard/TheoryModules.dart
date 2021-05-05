@@ -4,6 +4,7 @@ import 'package:frontend/src/components/EmptyState.dart';
 import 'package:frontend/src/components/ModuleItemTile.dart';
 import 'package:frontend/src/data/Module.dart';
 import 'package:frontend/src/model/ModuleItem.dart';
+import 'package:frontend/src/model/User.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 class TheoryModules extends StatefulWidget {
@@ -17,7 +18,6 @@ class _TheoryModulesState extends State<TheoryModules> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 25, 5, 25),
-      // child: Expanded(
       child: Query(
         options: QueryOptions(
           documentNode: gql(Module.getModules),
@@ -25,7 +25,6 @@ class _TheoryModulesState extends State<TheoryModules> {
         ),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {
-          // refetchQuery = refetch;
           if (result.hasException) {
             return EmptyState(message: result.exception.toString());
           }
@@ -34,6 +33,9 @@ class _TheoryModulesState extends State<TheoryModules> {
           }
           final List<LazyCacheMap> items =
               (result.data['getModules'] as List<dynamic>).cast<LazyCacheMap>();
+          dynamic responseData = result.data['get'];
+          UserItem user = UserItem.fromJson(responseData);
+
           if (items.length == 0)
             return EmptyState(message: 'No Theory Modules Found');
           return ListView.builder(
@@ -41,12 +43,10 @@ class _TheoryModulesState extends State<TheoryModules> {
             itemBuilder: (context, index) {
               dynamic responseData = items[index];
               return ModuleItemTile(
-                item: ModuleItem.fromJson(responseData),
-              );
+                  item: ModuleItem.fromJson(responseData), user: user);
             },
           );
         },
-        // ),
       ),
     );
   }

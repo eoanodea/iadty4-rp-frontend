@@ -3,6 +3,7 @@ import 'package:frontend/src/model/ModuleItem.dart';
 import 'package:frontend/src/model/QuestionItem.dart';
 
 import 'LessonItem.dart';
+import 'Streak.dart';
 
 class UserItem {
   UserItem({
@@ -11,6 +12,9 @@ class UserItem {
     this.email,
     this.createdAt,
     this.updatedAt,
+    this.streak,
+    this.points,
+    this.level,
     this.completedModules,
     this.completedLessons,
     this.incorrectQuestions,
@@ -21,6 +25,9 @@ class UserItem {
   String email;
   DateTime createdAt;
   DateTime updatedAt;
+  Streak streak;
+  int points;
+  int level;
   List<ModuleItem> completedModules;
   List<LessonItem> completedLessons;
   List<QuestionItem> incorrectQuestions;
@@ -32,6 +39,9 @@ class UserItem {
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
+        streak: json["streak"] == null ? null : Streak.fromJson(json["streak"]),
+        points: json["points"] == null ? null : json["points"],
+        level: json["level"] == null ? null : json["level"],
         updatedAt: json["updatedAt"] == null
             ? null
             : DateTime.parse(json["updatedAt"]),
@@ -53,6 +63,9 @@ class UserItem {
         "email": email == null ? null : email,
         "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
         "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
+        "streak": streak == null ? null : streak.toJson(),
+        "points": points == null ? null : points,
+        "level": level == null ? null : level,
         "completedModules": completedModules == null
             ? null
             : List<ModuleItem>.from(completedModules.map((x) => x)),

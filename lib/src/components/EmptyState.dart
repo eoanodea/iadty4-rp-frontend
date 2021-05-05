@@ -30,15 +30,18 @@ class EmptyState extends StatelessWidget {
           ),
           ConstrainedBox(
             constraints: BoxConstraints.tightFor(width: mediaQuery.size.width),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.orange)),
-                child: const Text(
-                  'Back',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () => action()),
+            child: action != null
+                ? ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.orange),
+                    ),
+                    child: const Text(
+                      'Back',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () => action())
+                : Text(''),
           ),
         ],
       ),

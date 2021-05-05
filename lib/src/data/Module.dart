@@ -7,6 +7,16 @@ class Module {
         id
         title
         level 
+        lessons {
+          id
+        }
+      }
+      get {
+        id
+        completedLessons {
+          id
+        }
+
       }
     }
     """;

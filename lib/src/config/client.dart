@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-// String serverUrl = "http://172.20.10.5:3000";
-// String serverUrl = "http://localhost:3000";
 String serverUrl = "https://iadt-researchproject-server.herokuapp.com";
 String endpoint = "/graphql";
 
@@ -15,7 +13,7 @@ class Config {
   static final AuthLink authLink = AuthLink(getToken: () async => _token);
 
   // static final WebSocketLink websocketLink = WebSocketLink(
-  //   url: 'wss://hasura.io/learn/graphql',
+  //   url: 'wss://iadt-researchproject-server.herokuapp.com/graphql',
   //   config: SocketClientConfig(
   //     autoReconnect: true,
   //     inactivityTimeout: Duration(seconds: 30),
