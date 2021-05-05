@@ -52,10 +52,11 @@ class ModuleItemTile extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => QuestionController(
-                            lessonId:
-                                item.lessons.asMap().containsKey(itemIndex + 1)
-                                    ? item.lessons[itemIndex + 1].id
-                                    : item.lessons[0]),
+                            lessonId: item.lessons[0].id
+                            // item.lessons.asMap().containsKey(itemIndex + 1)
+                            //     ? item.lessons[itemIndex + 1].id
+                            //     : item.lessons[0].id
+                            ),
                         fullscreenDialog: true),
                   )
               : () => {},
