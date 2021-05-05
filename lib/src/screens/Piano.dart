@@ -66,7 +66,12 @@ class _PianoPageState extends State<PianoPage> with WidgetsBindingObserver {
                 onTapCancel: () {
                   MidiUtils.stop(note + (12 * 3));
                 },
-                onTapDown: (_) => playNote(note + (12 * 3)),
+                onTapDown: (_) => {
+                  playNote(note + (12 * 3)),
+                  Future.delayed(const Duration(milliseconds: 400), () {
+                    MidiUtils.stop(note + (12 * 3));
+                  })
+                },
               ),
             ),
           ),
