@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/components/utils.dart';
 import 'package:frontend/src/constants.dart';
 import 'package:frontend/src/data/Lesson.dart';
+import 'package:frontend/src/screens/lessons/LessonStreak.dart';
 
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -34,31 +35,25 @@ class _CompleteLessonState extends State<CompleteLesson> {
 
   final String lessonId;
   final String userId;
-  // final List<QuestionItem> questions;
   List<int> score;
-  // int totalCorrect;
 
   int countScores() {
     int result = 0;
     for (var item in score) {
       if (item != 0) result += 1;
     }
-    // score.forEach((element) {
-    // if(element == true) {
-    //   result +=1;
-    //   }
-    // }
     return result;
-    // setState(() {
-    //   totalCorrect = result;
-    // });
   }
 
-  _CompleteLessonState(
-      {this.lessonId,
-      this.userId,
-      //this.questions,
-      this.score});
+  int countPoints() {
+    int result = 0;
+    for (var item in score) {
+      if (item != -1) result += item;
+    }
+    return result;
+  }
+
+  _CompleteLessonState({this.lessonId, this.userId, this.score});
 
   @override
   Widget build(BuildContext context) {
@@ -107,11 +102,21 @@ class _CompleteLessonState extends State<CompleteLesson> {
               if (result.data != null) {
                 // print(result.data['login']['token']);
                 // String token = result.data['login']['token'];
-                UtilFs.showToast("Lesson Complete", context);
+                // UtilFs.showToast("Lesson Complete", context);
                 // await sharedPreferenceService.setToken(token);
                 // Config.initailizeClient(token);
                 // Navigator.pushReplacementNamed(context, "/dashboard");
-                Navigator.pop(context);
+                print(result.data);
+                if (result.data['completeLesson']['streak'] != 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LessonStreak(
+                          streak: result.data['completeLesson']['streak']),
+                    ),
+                  );
+                } else
+                  Navigator.pop(context);
                 return;
               }
             },
@@ -158,6 +163,10 @@ class _CompleteLessonState extends State<CompleteLesson> {
             ),
             Text(
               "You answered ${countScores()} correct out of ${score.length}",
+              style: kSubHeadingTextStyle,
+            ),
+            Text(
+              "You've earned ${countPoints()} points!",
               style: kSubHeadingTextStyle,
             ),
             // FlatButton(

@@ -50,7 +50,10 @@ class Lesson {
   static String completeLesson = """
     mutation(\$lessonId: String!) {
       completeLesson(lessonId: \$lessonId) {
-        id
+        lesson {
+          id
+        }
+        streak
       }
     }
   """;

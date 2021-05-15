@@ -115,7 +115,7 @@ class QuestionAnswer extends StatelessWidget {
         builder: (BuildContext context) {
           bool answer = checkAnswer();
           return Container(
-            height: 220,
+            height: 260,
             color: Colors.grey[200],
             child: Center(
               child: Column(
