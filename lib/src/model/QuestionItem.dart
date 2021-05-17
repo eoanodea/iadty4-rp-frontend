@@ -29,7 +29,7 @@ class QuestionItem {
       id: json["id"],
       text: List<TextItem>.from(json["text"].map((x) => TextItem.fromJson(x))),
       answer: json["answer"] == null ? null : json["answer"],
-      type: json["type"],
+      type: json["type"] == null ? null : json["type"],
       answerArr: json["answerArr"] == null
           ? null
           : List<String>.from(json["answerArr"].map((x) => x)),
@@ -38,14 +38,15 @@ class QuestionItem {
           : List<String>.from(json["options"].map((x) => x)),
       image: json["image"] == null ? null : json["image"],
       answerHint: json["answerHint"] == null ? null : json["answerHint"],
-      requiresPiano: json["requiresPiano"],
+      requiresPiano:
+          json["requiresPiano"] == null ? null : json["requiresPiano"],
       answered: false);
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "text": List<dynamic>.from(text.map((x) => x.toJson())),
         "answer": null ? null : answer,
-        "type": type,
+        "type": null ? null : type,
         "answerArr": null ? null : List<dynamic>.from(answerArr.map((x) => x)),
         "options": null ? null : List<dynamic>.from(options.map((x) => x)),
         "image": null ? null : image,

@@ -46,14 +46,14 @@ class UserItem {
             ? null
             : DateTime.parse(json["updatedAt"]),
         completedModules: json["completedModules"] == null
-            ? null
+            ? []
             : List<ModuleItem>.from(json["completedModules"].map((x) => x)),
         completedLessons: json["completedLessons"] == null
-            ? null
+            ? []
             : List<LessonItem>.from(
                 json["completedLessons"].map((x) => LessonItem.fromJson(x))),
         incorrectQuestions: json["incorrectQuestions"] == null
-            ? null
+            ? []
             : List<QuestionItem>.from(json["incorrectQuestions"].map((x) => x)),
       );
 

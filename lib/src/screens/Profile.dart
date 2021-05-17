@@ -88,7 +88,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Card(
                       child: ListTile(
                         leading: Icon(Icons.check),
-                        title: Text('${user.completedLessons.length}'),
+                        title: Text(
+                            '${user.completedLessons != null ? user.completedLessons.length : 0}'),
                         subtitle: Text("Lessons completed"),
                       ),
                     ),
@@ -97,7 +98,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Card(
                       child: ListTile(
                         leading: Icon(Icons.close),
-                        title: Text('${user.incorrectQuestions.length}'),
+                        title: Text(
+                            '${user.incorrectQuestions != null ? user.incorrectQuestions.length : 0}'),
                         subtitle: Text("Incorrect answers "),
                       ),
                     ),

@@ -39,8 +39,9 @@ class _CompleteLessonState extends State<CompleteLesson> {
 
   int countScores() {
     int result = 0;
+    print('here is scores! $score');
     for (var item in score) {
-      if (item != 0) result += 1;
+      if (item != -1 && item != 0) result += 1;
     }
     return result;
   }
