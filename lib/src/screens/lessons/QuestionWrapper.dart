@@ -14,30 +14,49 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 typedef AddScoreCallback = void Function(int score);
 typedef NextQuestionCallback = void Function(int score);
+typedef UpdatePointsCallback = void Function(int score);
 
 class QuestionWrapper extends StatefulWidget {
   final QuestionItem question;
   final AddScoreCallback addScore;
   final NextQuestionCallback nextQuestion;
+  final int points;
+  final UpdatePointsCallback updatePoints;
 
   const QuestionWrapper(
-      {Key key, this.question, this.addScore, this.nextQuestion})
+      {Key key,
+      this.question,
+      this.addScore,
+      this.nextQuestion,
+      this.points,
+      this.updatePoints})
       : super(key: key);
 
   @override
   _QuestionWrapperState createState() => _QuestionWrapperState(
-      question: question, addScore: addScore, nextQuestion: nextQuestion);
+      question: question,
+      addScore: addScore,
+      nextQuestion: nextQuestion,
+      points: points,
+      updatePoints: updatePoints);
 }
 
 class _QuestionWrapperState extends State<QuestionWrapper> {
   final QuestionItem question;
   final AddScoreCallback addScore;
   final NextQuestionCallback nextQuestion;
+  final int points;
+  final UpdatePointsCallback updatePoints;
 
   List<Option> selectedOptions = [];
-  int points = -1;
+  // int points = -1;
 
-  _QuestionWrapperState({this.question, this.addScore, this.nextQuestion});
+  _QuestionWrapperState(
+      {this.question,
+      this.addScore,
+      this.nextQuestion,
+      this.points,
+      this.updatePoints});
 
   void answerQuestion(RunMutation runMutation, List<String> options) {
     if (question.type == "MULTIPLE_CHOICE") {
@@ -114,9 +133,8 @@ class _QuestionWrapperState extends State<QuestionWrapper> {
               }
 
               if (result.data != null) {
-                setState(() {
-                  points = result.data['answerQuestion'];
-                });
+                updatePoints(result.data['answerQuestion']);
+
                 return;
               }
             },

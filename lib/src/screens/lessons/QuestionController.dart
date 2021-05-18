@@ -24,6 +24,14 @@ class _QuestionControllerState extends State<QuestionController> {
   List<int> scores = [];
   int currentScore = -1;
   int lessonLength = 0;
+  int points = -1;
+  List<LazyCacheMap> questions = [];
+
+  void setQuestion(List<LazyCacheMap> newQuestions) {
+    setState(() {
+      questions = newQuestions;
+    });
+  }
 
   void addScore(int score) {
     setState(() {
@@ -44,6 +52,12 @@ class _QuestionControllerState extends State<QuestionController> {
   void setLessonLength(int length) {
     setState(() {
       lessonLength = length;
+    });
+  }
+
+  void updatePoints(int score) {
+    setState(() {
+      points = score;
     });
   }
 
@@ -84,14 +98,37 @@ class _QuestionControllerState extends State<QuestionController> {
                             message: result.exception.toString(),
                             action: () => Navigator.pop(context));
                       }
-                      if (result.loading) {
+                      var item;
+                      if (questions.length > 0) {
+                        item = QuestionItem.fromJson(questions[scores.length]);
+                        // item =
+                      }
+
+                      if (result.loading && item == null) {
                         return Center(child: CircularProgressIndicator());
                       }
+
                       final List<LazyCacheMap> items =
                           (result.data['getQuestions'] as List<dynamic>)
                               .cast<LazyCacheMap>();
-                      if (items.length == 0)
+                      if (items != null && items.length == 0)
                         return EmptyState(message: 'No Questions Found');
+
+                      // QuestionItem item;
+
+                      if (questions.length == 0) {
+                        Future.delayed(Duration.zero, () async {
+                          setQuestion(items);
+                          item = QuestionItem.fromJson(items[scores.length]);
+                        });
+                      }
+                      // else {
+                      //   item = QuestionItem.fromJson(questions[scores.length]);
+                      // }
+
+                      if (item == null) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
                       if (scores.length >= items.length) {
                         return CompleteLesson(
@@ -101,10 +138,9 @@ class _QuestionControllerState extends State<QuestionController> {
                         );
                       }
 
-                      QuestionItem item =
-                          QuestionItem.fromJson(items[scores.length]);
-
                       return QuestionWrapper(
+                        updatePoints: (int score) => updatePoints(score),
+                        points: points,
                         question: item,
                         nextQuestion: (int score) => nextQuestion(score),
                       );
